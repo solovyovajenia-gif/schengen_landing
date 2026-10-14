@@ -131,6 +131,7 @@ em{font-style:italic;color:#55708C}
 .stats b{display:block;font-family:var(--serif);font-weight:400;font-size:34px;line-height:1;color:var(--navy)}
 .stats span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .hero .legal{margin-top:36px;max-width:520px;line-height:1.7}
+.eb-s{display:none}
 .enter{opacity:0;transform:translateY(24px);animation:enter 1s var(--ease) forwards}
 @keyframes enter{to{opacity:1;transform:none}}
 
@@ -547,7 +548,10 @@ em{font-style:italic;color:#55708C}
   .h-h1{order:2;margin:18px 0 12px}
   h1{font-size:clamp(34px,9.5vw,44px)}
   .h-sub{order:3}
-  .h-lead{order:4;font-size:15px;margin-bottom:28px}
+  .h-lead{display:none}
+  .eb-l{display:none}.eb-s{display:inline}
+  .hero .sub{font-size:17px;margin-bottom:26px;max-width:none}
+  .h-h1{margin:14px 0 14px}
   .h-stats{order:5;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 32px;padding:0}
   .h-stats b{font-size:26px;white-space:nowrap}
   .h-stats span{font-size:9px;letter-spacing:.08em;line-height:1.35;display:block;margin-top:6px}
@@ -673,7 +677,7 @@ em{font-style:italic;color:#55708C}
   <div class="hero-bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
   <div class="container">
     <div class="h-left">
-      <span class="eyebrow enter h-eyebrow">Schengen · Visa application support · UAE</span>
+      <span class="eyebrow enter h-eyebrow"><span class="eb-l">Schengen · Visa application support · UAE</span><span class="eb-s">Schengen · Visa support</span></span>
       <h1 class="h-h1"><span class="line"><span>Planning a Trip</span></span><span class="line"><span>to <em>Europe?</em></span></span></h1>
       <p class="sub enter h-sub" style="animation-delay:.3s">Get Personalised Support with Your Schengen Visa Application</p>
       <p class="lead enter h-lead" style="animation-delay:.35s">We help UAE residents prepare their Schengen visa application — from the document checklist to a final review before submission. Guidance tailored to your travel plans.</p>
