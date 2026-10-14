@@ -592,7 +592,9 @@ em{font-style:italic;color:#55708C}
   .faq summary{font-size:18px;padding:20px 0}
   .faq .ans>div{font-size:14px}
   .dest .btn{width:auto}
-  .dest{aspect-ratio:4/3}
+  .dest{aspect-ratio:4/3;position:sticky;top:calc(76px + var(--i,0)*12px);box-shadow:0 -10px 40px rgba(15,32,54,.18)}
+  .dest-grid{gap:14px;padding-bottom:24px}
+  .dest.reveal.in{transform:none}
   .price-photo{min-height:0;padding:0}
   .price-photo-text{position:relative;left:auto;right:auto;bottom:auto;padding:150px 22px 28px}
   .price-photo::before{background:linear-gradient(180deg,rgba(15,32,54,.2) 0%,rgba(15,32,54,.85) 35%,rgba(15,32,54,.97) 100%)}
