@@ -452,7 +452,7 @@ em{font-style:italic;color:#55708C}
 .final-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%;z-index:-2;opacity:.35;filter:saturate(.8)}
 .final-card::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,#0F2036 0%,rgba(15,32,54,.8) 45%,rgba(15,32,54,.45) 100%)}
 .final-card{background:transparent}
-.final-card .form-card{color:var(--navy)}
+.final-card .form-card{color:var(--navy);scroll-margin-top:84px}
 .final-card .form-card .fields{grid-template-columns:1fr}
 @media(min-width:640px){.final-card .form-card .fields{grid-template-columns:1fr 1fr}.final-card .form-card .fields .full{grid-column:1/-1}}
 .final-card .form-card .btn{width:100%}
@@ -652,7 +652,7 @@ em{font-style:italic;color:#55708C}
     <a href="#faq">FAQ</a>
     <a href="#contact">Contact</a>
   </nav>
-  <a href="#form" class="btn btn-primary">Check My Case</a>
+  <a href="#finalForm" class="btn btn-primary">Check My Case</a>
   <div class="mmenu-contacts">
     <a href="tel:+971542946213">+971 54 294 6213</a>
     <a class="wa-link" href="#" target="_blank" rel="noopener">WhatsApp</a>
@@ -672,7 +672,7 @@ em{font-style:italic;color:#55708C}
       <a href="#contact">Contact</a>
     </nav>
     <div class="header-right">
-      <a href="#form" class="btn btn-ghost header-cta">Check My Case</a>
+      <a href="#finalForm" class="btn btn-ghost header-cta">Check My Case</a>
       <label class="burger" for="menuToggle" aria-label="Menu"><span></span><span></span><span></span></label>
     </div>
   </div>
@@ -691,7 +691,7 @@ em{font-style:italic;color:#55708C}
       <p class="lead enter h-lead" style="animation-delay:.35s">We help UAE residents prepare their Schengen visa application — from the document checklist to a final review before submission. Guidance tailored to your travel plans.</p>
       <div class="enter h-cta" style="animation-delay:.6s">
         <div class="cta-row">
-          <a href="#form" class="btn btn-primary"><span>Check My Case</span> <span class="arrow">→</span></a>
+          <a href="#finalForm" class="btn btn-primary"><span>Check My Case</span> <span class="arrow">→</span></a>
           <a class="btn btn-wa wa-link" href="#" target="_blank" rel="noopener"><svg width="20" height="20"><use href="#i-wa"/></svg><span>Contact Us on WhatsApp</span></a>
         </div>
         <p class="note"><span class="dot-live"></span><span>Get an initial assessment of your case with our visa consultant.</span></p>
@@ -756,15 +756,15 @@ em{font-style:italic;color:#55708C}
       <p class="lead reveal">Discover personalised Schengen visa application preparation support for your European travel plans.</p>
     </div>
     <div class="dest-grid">
-      <a href="#form" class="dest reveal" data-country="France" style="--i:0"><img src="img/france.jpg" alt="Eiffel Tower, Paris" loading="lazy"><span class="cap">Schengen</span><span class="country">France</span><span class="q">Planning a Trip to France?</span><span class="btn">Check My Case</span></a>
-      <a href="#form" class="dest reveal" data-country="Italy" style="--i:1"><img src="img/italy.jpg" alt="Colosseum, Rome" loading="lazy"><span class="cap">Schengen</span><span class="country">Italy</span><span class="q">Planning a Trip to Italy?</span><span class="btn">Check My Case</span></a>
-      <a href="#form" class="dest reveal" data-country="Spain" style="--i:2"><img src="img/spain.jpg" alt="Barcelona from above" loading="lazy"><span class="cap">Schengen</span><span class="country">Spain</span><span class="q">Planning a Trip to Spain?</span><span class="btn">Check My Case</span></a>
-      <a href="#form" class="dest reveal" data-country="Germany" style="--i:3"><img src="img/germany.jpg" alt="Brandenburg Gate, Berlin" loading="lazy"><span class="cap">Schengen</span><span class="country">Germany</span><span class="q">Planning a Trip to Germany?</span><span class="btn">Check My Case</span></a>
-      <a href="#form" class="dest reveal" data-country="Switzerland" style="--i:4"><img src="img/switzerland.jpg" alt="Swiss Alps" loading="lazy"><span class="cap">Schengen</span><span class="country">Switzerland</span><span class="q">Planning a Trip to Switzerland?</span><span class="btn">Check My Case</span></a>
-      <a href="#form" class="dest reveal" data-country="Greece" style="--i:5"><img src="img/greece.jpg" alt="Santorini, Greece" loading="lazy"><span class="cap">Schengen</span><span class="country">Greece</span><span class="q">Planning a Trip to Greece?</span><span class="btn">Check My Case</span></a>
-      <a href="#form" class="dest reveal" data-country="Netherlands" style="--i:6"><img src="img/netherlands.jpg" alt="Amsterdam canal" loading="lazy"><span class="cap">Schengen</span><span class="country">Netherlands</span><span class="q">Planning a Trip to the Netherlands?</span><span class="btn">Check My Case</span></a>
-      <a href="#form" class="dest reveal" data-country="Austria" style="--i:7"><img src="img/austria.jpg" alt="Vienna skyline" loading="lazy"><span class="cap">Schengen</span><span class="country">Austria</span><span class="q">Planning a Trip to Austria?</span><span class="btn">Check My Case</span></a>
-      <a href="#form" class="dest other reveal" data-country="Other Schengen country" style="--i:8"><span class="cap">29 countries</span><span class="country">Another country?</span><span class="q">Portugal, Belgium, Czech Republic, Poland, Hungary, Croatia, the Nordics and every other Schengen State — we help with all of them.</span><span class="btn">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="France" style="--i:0"><img src="img/france.jpg" alt="Eiffel Tower, Paris" loading="lazy"><span class="cap">Schengen</span><span class="country">France</span><span class="q">Planning a Trip to France?</span><span class="btn">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Italy" style="--i:1"><img src="img/italy.jpg" alt="Colosseum, Rome" loading="lazy"><span class="cap">Schengen</span><span class="country">Italy</span><span class="q">Planning a Trip to Italy?</span><span class="btn">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Spain" style="--i:2"><img src="img/spain.jpg" alt="Barcelona from above" loading="lazy"><span class="cap">Schengen</span><span class="country">Spain</span><span class="q">Planning a Trip to Spain?</span><span class="btn">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Germany" style="--i:3"><img src="img/germany.jpg" alt="Brandenburg Gate, Berlin" loading="lazy"><span class="cap">Schengen</span><span class="country">Germany</span><span class="q">Planning a Trip to Germany?</span><span class="btn">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Switzerland" style="--i:4"><img src="img/switzerland.jpg" alt="Swiss Alps" loading="lazy"><span class="cap">Schengen</span><span class="country">Switzerland</span><span class="q">Planning a Trip to Switzerland?</span><span class="btn">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Greece" style="--i:5"><img src="img/greece.jpg" alt="Santorini, Greece" loading="lazy"><span class="cap">Schengen</span><span class="country">Greece</span><span class="q">Planning a Trip to Greece?</span><span class="btn">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Netherlands" style="--i:6"><img src="img/netherlands.jpg" alt="Amsterdam canal" loading="lazy"><span class="cap">Schengen</span><span class="country">Netherlands</span><span class="q">Planning a Trip to the Netherlands?</span><span class="btn">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Austria" style="--i:7"><img src="img/austria.jpg" alt="Vienna skyline" loading="lazy"><span class="cap">Schengen</span><span class="country">Austria</span><span class="q">Planning a Trip to Austria?</span><span class="btn">Check My Case</span></a>
+      <a href="#finalForm" class="dest other reveal" data-country="Other Schengen country" style="--i:8"><span class="cap">29 countries</span><span class="country">Another country?</span><span class="q">Portugal, Belgium, Czech Republic, Poland, Hungary, Croatia, the Nordics and every other Schengen State — we help with all of them.</span><span class="btn">Check My Case</span></a>
     </div>
     <p class="dest-note reveal"><svg><use href="#i-info"/></svg><span>The country you apply to is determined by your actual itinerary and the applicable Schengen visa rules — the main destination or the first point of entry — not only by preference. We help you understand which rule applies to your trip.</span></p>
   </div>
@@ -803,7 +803,7 @@ em{font-style:italic;color:#55708C}
         <span class="eyebrow">One package, reviewed</span>
         <h3 style="margin-top:18px">A complete file is easier to assess than a rushed one</h3>
         <p>Missing pages, inconsistent dates or unclear itineraries are among the most common reasons an application needs extra work. We help you organise everything before you submit.</p>
-        <a href="#form" class="btn btn-primary"><span>Check My Case</span> <span class="arrow">→</span></a>
+        <a href="#finalForm" class="btn btn-primary"><span>Check My Case</span> <span class="arrow">→</span></a>
       </div>
     </div>
   </div>
@@ -827,7 +827,7 @@ em{font-style:italic;color:#55708C}
     </ol>
     <div class="dark-cta reveal">
       <p>We look at your situation <em>before</em> you commit to any paid service</p>
-      <a href="#form" class="btn btn-gold"><span>Check My Case</span> <span class="arrow">→</span></a>
+      <a href="#finalForm" class="btn btn-gold"><span>Check My Case</span> <span class="arrow">→</span></a>
     </div>
   </div>
 </section>
@@ -847,7 +847,7 @@ em{font-style:italic;color:#55708C}
       <div class="tl-step"><span class="tl-dot">03</span><b>Prepare Your Documents</b><p>We help you prepare your application form and supporting documents based on your circumstances.</p></div>
       <div class="tl-step"><span class="tl-dot">04</span><b>Submit Through Official Channels</b><p>You submit your application through the appropriate embassy, consulate or authorised visa application centre.</p></div>
     </div>
-    <div class="center-cta"><a href="#form" class="btn btn-primary"><span>Check My Case</span> <span class="arrow">→</span></a></div>
+    <div class="center-cta"><a href="#finalForm" class="btn btn-primary"><span>Check My Case</span> <span class="arrow">→</span></a></div>
   </div>
 </section>
 
@@ -880,7 +880,7 @@ em{font-style:italic;color:#55708C}
           <li><i><svg><use href="#i-check"/></svg></i><span>Guidance on the official submission process</span></li>
           <li><i><svg><use href="#i-check"/></svg></i><span>Final application package review</span></li>
         </ul>
-        <a href="#form" class="btn btn-primary"><span>Get a Consultation</span> <span class="arrow">→</span></a>
+        <a href="#finalForm" class="btn btn-primary"><span>Get a Consultation</span> <span class="arrow">→</span></a>
       </div>
     </div>
   </div>
@@ -976,7 +976,7 @@ em{font-style:italic;color:#55708C}
       <h2>Your European Journey Starts <em>with Good Preparation</em></h2>
       <p>Tell us about your travel plans. Our consultant will help you understand the next steps in preparing your Schengen visa application.</p>
       <div class="cta-row">
-        <a href="#form" class="btn btn-light"><span>Check My Case</span> <span class="arrow">→</span></a>
+        <a href="#finalForm" class="btn btn-light"><span>Check My Case</span> <span class="arrow">→</span></a>
         <a class="btn btn-wa wa-link" href="#" target="_blank" rel="noopener"><svg width="20" height="20"><use href="#i-wa"/></svg><span>Chat on WhatsApp</span></a>
         <a class="btn btn-tg" href="https://t.me/+971542946213" target="_blank" rel="noopener"><svg width="20" height="20"><use href="#i-tg"/></svg><span>Telegram</span></a>
       </div>
@@ -1105,14 +1105,14 @@ em{font-style:italic;color:#55708C}
 </div>
 
 <div class="sticky-m" id="stickyM">
-  <a href="#form" class="btn btn-primary">Check My Case</a>
+  <a href="#finalForm" class="btn btn-primary">Check My Case</a>
 </div>
 <div class="side-m">
   <a class="sq wa wa-link" href="#" aria-label="WhatsApp" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg></a>
   <a class="sq tg" href="https://t.me/+971542946213" aria-label="Telegram" target="_blank" rel="noopener"><svg><use href="#i-tg"/></svg></a>
 </div>
 <div class="float-d" id="floatD">
-  <a href="#form" class="btn btn-primary" id="floatCta"><span>Check My Case</span> <span class="arrow">→</span></a>
+  <a href="#finalForm" class="btn btn-primary" id="floatCta"><span>Check My Case</span> <span class="arrow">→</span></a>
   <a class="sq wa wa-link" href="#" aria-label="WhatsApp" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg></a>
   <a class="sq tg" href="https://t.me/+971542946213" aria-label="Telegram" target="_blank" rel="noopener"><svg><use href="#i-tg"/></svg></a>
 </div>
