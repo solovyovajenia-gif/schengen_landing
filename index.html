@@ -76,6 +76,9 @@ em{font-style:italic;color:#55708C}
 .sq.wa{background:var(--wa)}
 .sq.wa::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--wa);opacity:.35;animation:softPulse 2.8s ease-out infinite;z-index:-1}
 .sq.tg{background:var(--tg)}
+.sq.tg::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--tg);opacity:.35;animation:softPulse 2.8s ease-out infinite 1.4s;z-index:-1}
+.sq.tg svg{animation:tgFly 4s ease-in-out infinite 1s}
+@keyframes tgFly{0%,70%,100%{transform:translate(0,0)}78%{transform:translate(3px,-3px)}86%{transform:translate(-1px,1px)}}
 .sq.tel{background:#fff;color:var(--navy);border:1px solid rgba(30,58,95,.14)}
 @keyframes softPulse{0%{transform:scale(1);opacity:.35}80%{transform:scale(1.55);opacity:0}100%{opacity:0}}
 .cta-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
@@ -650,7 +653,7 @@ em{font-style:italic;color:#55708C}
   <div class="mmenu-contacts">
     <a href="tel:+971542946213">+971 54 294 6213</a>
     <a class="wa-link" href="#" target="_blank" rel="noopener">WhatsApp</a>
-    <a href="https://t.me/world_pass_bot" target="_blank" rel="noopener">Telegram</a>
+    <a href="https://t.me/+971542946213" target="_blank" rel="noopener">Telegram</a>
   </div>
 </div>
 
@@ -972,7 +975,7 @@ em{font-style:italic;color:#55708C}
       <div class="cta-row">
         <a href="#form" class="btn btn-light"><span>Check My Case</span> <span class="arrow">→</span></a>
         <a class="btn btn-wa wa-link" href="#" target="_blank" rel="noopener"><svg width="20" height="20"><use href="#i-wa"/></svg><span>Chat on WhatsApp</span></a>
-        <a class="btn btn-tg" href="https://t.me/world_pass_bot" target="_blank" rel="noopener"><svg width="20" height="20"><use href="#i-tg"/></svg><span>Telegram</span></a>
+        <a class="btn btn-tg" href="https://t.me/+971542946213" target="_blank" rel="noopener"><svg width="20" height="20"><use href="#i-tg"/></svg><span>Telegram</span></a>
       </div>
     </div>
   </div>
@@ -1035,7 +1038,7 @@ em{font-style:italic;color:#55708C}
       <p class="lead reveal" style="margin-top:20px">Have questions about preparing your Schengen visa application? Contact our team to discuss your travel plans and the support you may need.</p>
       <div class="c-icons reveal">
         <a class="c-ic wa-link" href="#" target="_blank" rel="noopener"><span class="sq wa"><svg><use href="#i-wa"/></svg></span><small>WhatsApp</small></a>
-        <a class="c-ic" href="https://t.me/world_pass_bot" target="_blank" rel="noopener"><span class="sq tg"><svg><use href="#i-tg"/></svg></span><small>Telegram</small></a>
+        <a class="c-ic" href="https://t.me/+971542946213" target="_blank" rel="noopener"><span class="sq tg"><svg><use href="#i-tg"/></svg></span><small>Telegram</small></a>
         <a class="c-ic" href="tel:+971542946213"><span class="sq tel"><svg><use href="#i-tel"/></svg></span><small>Call</small></a>
       </div>
     </div>
@@ -1043,6 +1046,7 @@ em{font-style:italic;color:#55708C}
       <div class="c-row"><span>Company</span><b>World Pass Services FZ-LLC</b></div>
       <div class="c-row"><span>Location</span><b>Dubai, United Arab Emirates</b></div>
       <div class="c-row"><span>Phone</span><b><a href="tel:+971542946213">+971 54 294 6213</a></b></div>
+      <div class="c-row"><span>Telegram</span><b><a href="https://t.me/+971542946213" target="_blank" rel="noopener">+971 54 294 6213</a></b></div>
       <div class="c-row"><span>Email</span><b class="tba">will be added</b></div>
       <div class="c-row"><span>Working hours</span><b>Mon–Sat, 10:00–19:00 (GST)</b></div>
     </div>
@@ -1081,7 +1085,7 @@ em{font-style:italic;color:#55708C}
     </div>
     <div class="f-base">
       <span>© 2026 World Pass. All rights reserved.</span>
-      <div class="f-links"><a href="tel:+971542946213">+971 54 294 6213</a><a class="wa-link" href="#" target="_blank" rel="noopener">WhatsApp</a><a href="https://t.me/world_pass_bot" target="_blank" rel="noopener">Telegram</a></div>
+      <div class="f-links"><a href="tel:+971542946213">+971 54 294 6213</a><a class="wa-link" href="#" target="_blank" rel="noopener">WhatsApp</a><a href="https://t.me/+971542946213" target="_blank" rel="noopener">Telegram</a></div>
     </div>
     <p class="f-legal">World Pass Services FZ-LLC · Licence No. 47036649 · CWEP9498, Compass Building, Al Shohada Road, Al Hamra Industrial Zone-FZ, Ras Al Khaimah, United Arab Emirates</p>
     <p class="f-disc">World Pass is a private travel consultancy and is not affiliated with any embassy, consulate, or government authority. We do not issue visas or guarantee visa approval.</p>
@@ -1101,12 +1105,12 @@ em{font-style:italic;color:#55708C}
 <div class="sticky-m" id="stickyM">
   <a href="#form" class="btn btn-primary">Check My Case</a>
   <a class="sq wa wa-link" href="#" aria-label="WhatsApp" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg></a>
-  <a class="sq tg" href="https://t.me/world_pass_bot" aria-label="Telegram" target="_blank" rel="noopener"><svg><use href="#i-tg"/></svg></a>
+  <a class="sq tg" href="https://t.me/+971542946213" aria-label="Telegram" target="_blank" rel="noopener"><svg><use href="#i-tg"/></svg></a>
 </div>
 <div class="float-d" id="floatD">
   <a href="#form" class="btn btn-primary" id="floatCta"><span>Check My Case</span> <span class="arrow">→</span></a>
   <a class="sq wa wa-link" href="#" aria-label="WhatsApp" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg></a>
-  <a class="sq tg" href="https://t.me/world_pass_bot" aria-label="Telegram" target="_blank" rel="noopener"><svg><use href="#i-tg"/></svg></a>
+  <a class="sq tg" href="https://t.me/+971542946213" aria-label="Telegram" target="_blank" rel="noopener"><svg><use href="#i-tg"/></svg></a>
 </div>
 
 <script>
