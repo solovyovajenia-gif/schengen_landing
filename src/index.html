@@ -141,6 +141,8 @@ em{font-style:italic;color:#55708C}
 
 /* hero visual — многослойный коллаж */
 .visual{position:relative;height:clamp(460px,54vw,640px);perspective:1200px}
+.vis-note{grid-column:2;font-size:12px;line-height:1.5;color:#8D9AAB;margin-top:14px;max-width:560px}
+@media(max-width:1023px){.vis-note{order:6;margin:-10px 0 28px;text-align:center}}
 .layer{position:absolute;transition:transform .8s var(--ease);will-change:transform}
 .sky{inset:0 0 40px 40px;border-radius:var(--r-lg);overflow:hidden;background:#9FB4CC;box-shadow:var(--shadow-3)}
 .sky .photo-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 55%;animation:kenburns 24s ease-in-out infinite alternate}
@@ -151,7 +153,7 @@ em{font-style:italic;color:#55708C}
 .sky .flight #flightPath{animation:dash 30s linear infinite}
 @keyframes dash{to{stroke-dashoffset:-600}}
 /* visa sticker */
-.sticker{left:0;bottom:0;width:min(420px,90%);background:#fff;border-radius:20px;box-shadow:var(--shadow-3);overflow:hidden;padding:18px 22px 20px;display:grid;gap:12px;background-image:repeating-linear-gradient(135deg,rgba(30,58,95,.025) 0 2px,transparent 2px 10px)}
+.sticker{left:0;bottom:0;width:min(420px,90%);background:#fff;border-radius:20px;box-shadow:var(--shadow-3);overflow:hidden;padding:18px 22px 20px;display:grid;gap:12px;}
 .st-top{display:flex;justify-content:space-between;align-items:center;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);white-space:nowrap;gap:12px}
 .st-top b{color:var(--navy);font-weight:600}
 .st-row{display:flex;align-items:center;justify-content:space-between;gap:14px}
@@ -650,7 +652,6 @@ em{font-style:italic;color:#55708C}
     <a href="#destinations">Destinations</a>
     <a href="#services">Services</a>
     <a href="#how">How It Works</a>
-    <a href="#cases">Client cases</a>
     <a href="#faq">FAQ</a>
     <a href="#contact">Contact</a>
   </nav>
@@ -670,7 +671,6 @@ em{font-style:italic;color:#55708C}
       <a href="#destinations">Destinations</a>
       <a href="#services">Services</a>
       <a href="#how">How It Works</a>
-      <a href="#cases">Client cases</a>
       <a href="#faq">FAQ</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -716,20 +716,20 @@ em{font-style:italic;color:#55708C}
         <svg class="euflag" viewBox="0 0 100 100" fill="#FFCC00"><polygon points="50.0,14.8 51.2,18.4 54.9,18.4 51.9,20.6 53.1,24.2 50.0,22.0 46.9,24.2 48.1,20.6 45.1,18.4 48.8,18.4"/><polygon points="65.0,18.8 66.2,22.4 69.9,22.4 66.9,24.6 68.1,28.2 65.0,26.0 61.9,28.2 63.1,24.6 60.1,22.4 63.8,22.4"/><polygon points="76.0,29.8 77.1,33.4 80.9,33.4 77.9,35.6 79.0,39.2 76.0,37.0 72.9,39.2 74.1,35.6 71.0,33.4 74.8,33.4"/><polygon points="80.0,44.8 81.2,48.4 84.9,48.4 81.9,50.6 83.1,54.2 80.0,52.0 76.9,54.2 78.1,50.6 75.1,48.4 78.8,48.4"/><polygon points="76.0,59.8 77.1,63.4 80.9,63.4 77.9,65.6 79.0,69.2 76.0,67.0 72.9,69.2 74.1,65.6 71.0,63.4 74.8,63.4"/><polygon points="65.0,70.8 66.2,74.4 69.9,74.4 66.9,76.6 68.1,80.2 65.0,78.0 61.9,80.2 63.1,76.6 60.1,74.4 63.8,74.4"/><polygon points="50.0,74.8 51.2,78.4 54.9,78.4 51.9,80.6 53.1,84.2 50.0,82.0 46.9,84.2 48.1,80.6 45.1,78.4 48.8,78.4"/><polygon points="35.0,70.8 36.2,74.4 39.9,74.4 36.9,76.6 38.1,80.2 35.0,78.0 31.9,80.2 33.1,76.6 30.1,74.4 33.8,74.4"/><polygon points="24.0,59.8 25.2,63.4 29.0,63.4 25.9,65.6 27.1,69.2 24.0,67.0 21.0,69.2 22.1,65.6 19.1,63.4 22.9,63.4"/><polygon points="20.0,44.8 21.2,48.4 24.9,48.4 21.9,50.6 23.1,54.2 20.0,52.0 16.9,54.2 18.1,50.6 15.1,48.4 18.8,48.4"/><polygon points="24.0,29.8 25.2,33.4 29.0,33.4 25.9,35.6 27.1,39.2 24.0,37.0 21.0,39.2 22.1,35.6 19.1,33.4 22.9,33.4"/><polygon points="35.0,18.8 36.2,22.4 39.9,22.4 36.9,24.6 38.1,28.2 35.0,26.0 31.9,28.2 33.1,24.6 30.1,22.4 33.8,22.4"/></svg>
       </div>
       <div class="layer sticker" data-depth="22">
-        <div class="st-top"><span>Schengen visa · <b>Application</b></span><span>WP 2026</span></div>
+        <div class="st-top"><span>Travel plan · <b>Europe</b></span><span>WP 2026</span></div>
         <div class="st-row">
           <div><span class="code">DXB</span><small>Dubai</small></div>
           <div class="mid"><svg viewBox="0 0 24 24"><use href="#i-plane" transform="rotate(90 12 12)"/></svg></div>
           <div style="text-align:right"><span class="code">CDG</span><small>Paris</small></div>
         </div>
-        <div class="st-meta"><div><span>Valid for</span><b>Schengen States</b></div><div><span>Entries</span><b>MULT</b></div><div><span>Package</span><b style="color:#1E8E57">Reviewed</b></div></div>
-        <div class="st-mrz">V&lt;WORLDPASS&lt;&lt;SCHENGEN&lt;&lt;SUPPORT&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;</div>
+        <div class="st-meta"><div><span>Trip</span><b>Leisure</b></div><div><span>Travellers</span><b>2</b></div><div><span>Seat</span><b>12A</b></div></div>
       </div>
       <div class="layer chip chip-1" data-depth="44">
         <span class="ok"><svg><use href="#i-check"/></svg></span>
-        <div><span>Document checklist</span><small>Complete</small></div>
+        <div><span>Document checklist</span><small>Prepared</small></div>
       </div>
     </div>
+    <p class="vis-note enter" style="animation-delay:.5s">Illustrative graphic — not an official travel document. Visa decisions are made exclusively by the relevant authorities.</p>
   </div>
 </section>
 
@@ -851,81 +851,6 @@ em{font-style:italic;color:#55708C}
       <div class="tl-step"><span class="tl-dot">04</span><b>Submit Through Official Channels</b><p>You submit your application through the appropriate embassy, consulate or authorised visa application centre.</p></div>
     </div>
     <div class="center-cta"><a href="#finalForm" class="btn btn-primary"><span>Check My Case</span> <span class="arrow">→</span></a></div>
-  </div>
-</section>
-
-<!-- 8. WHAT'S INCLUDED -->
-<section class="section" id="included">
-  <div class="container">
-    <div class="section-head center">
-      <span class="eyebrow center reveal">What's included</span>
-      <h2 class="reveal">What's Included in Our <em>Visa Support Service?</em></h2>
-      <p class="lead reveal">Clear, practical assistance throughout the application preparation process.</p>
-    </div>
-    <div class="price reveal">
-      <div class="price-l price-photo">
-        <img src="img/italy.jpg" alt="Colosseum in Rome at dusk" loading="lazy">
-        <div class="price-photo-text">
-          <span class="eyebrow">Schengen visa support</span>
-          <div class="amount">Pricing on request</div>
-          <div class="fee"><svg><use href="#i-info"/></svg><span>Government <span class="amp">&amp;</span> visa centre fees are separate</span></div>
-          <p>Our consulting fee depends on the destination, number of applicants, your visa history and the level of support. Terms and fees are explained before you proceed. No payment for the initial assessment.</p>
-        </div>
-      </div>
-      <div class="price-r">
-        <span class="eyebrow">Included in the service</span>
-        <ul class="incl">
-          <li><i><svg><use href="#i-check"/></svg></i><span>Initial consultation</span></li>
-          <li><i><svg><use href="#i-check"/></svg></i><span>Individual case assessment</span></li>
-          <li><i><svg><use href="#i-check"/></svg></i><span>Personalised document checklist</span></li>
-          <li><i><svg><use href="#i-check"/></svg></i><span>Application form assistance</span></li>
-          <li><i><svg><use href="#i-check"/></svg></i><span>Supporting document review</span></li>
-          <li><i><svg><use href="#i-check"/></svg></i><span>Guidance on the official submission process</span></li>
-          <li><i><svg><use href="#i-check"/></svg></i><span>Final application package review</span></li>
-        </ul>
-        <a href="#finalForm" class="btn btn-primary"><span>Get a Consultation</span> <span class="arrow">→</span></a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 6b. CLIENT CASES -->
-<section class="section services" id="cases">
-  <div class="container">
-    <div class="section-head">
-      <span class="eyebrow reveal">Client cases</span>
-      <h2 class="reveal">Real cases <em>from our practice</em></h2>
-      <p class="lead reveal">Details are changed to protect clients' privacy. Outcomes are real.</p>
-    </div>
-    <div class="stack">
-      <article class="sc" style="--i:0">
-        <div class="sc-head"><span class="sc-n">01</span><span class="sc-tag">After approval</span></div>
-        <h3>Two visas in the wrong passports — fixed in 2 hours</h3>
-        <div class="sc-cols">
-          <div><dt>Situation</dt><dd>Twins' tourist visas were approved, but the consulate placed each sticker in the other child's passport. The trip was days away.</dd></div>
-          <div><dt>What we did</dt><dd>Contacted the consulate immediately and explained the urgency.</dd></div>
-          <div class="sc-res"><dt>Result</dt><dd>Stickers replaced within 2 hours. Family flew on schedule.</dd></div>
-        </div>
-      </article>
-      <article class="sc" style="--i:1">
-        <div class="sc-head"><span class="sc-n">02</span><span class="sc-tag">After two refusals</span></div>
-        <h3>Two refusals — then approval to rejoin her husband</h3>
-        <div class="sc-cols">
-          <div><dt>Situation</dt><dd>After a long stay abroad, the client was refused a tourist visa twice.</dd></div>
-          <div><dt>What we did</dt><dd>Analysed her travel history, family situation and both refusals, then rebuilt the application around the weak points.</dd></div>
-          <div class="sc-res"><dt>Result</dt><dd>Third application approved. She returned to her husband.</dd></div>
-        </div>
-      </article>
-      <article class="sc" style="--i:2">
-        <div class="sc-head"><span class="sc-n">03</span><span class="sc-tag">Urgent</span></div>
-        <h3>A visa in one day — to make it to surgery</h3>
-        <div class="sc-cols">
-          <div><dt>Situation</dt><dd>Surgery in Germany was scheduled and paid for. Almost no time left for a visa.</dd></div>
-          <div><dt>What we did</dt><dd>Prepared the file overnight, submitted proof of payment and the doctor's letter, flagged the urgency to the consulate.</dd></div>
-          <div class="sc-res"><dt>Result</dt><dd>Appointment next morning, passport with visa after lunch, flight the same day.</dd></div>
-        </div>
-      </article>
-    </div>
   </div>
 </section>
 
