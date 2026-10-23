@@ -2,3 +2,4 @@
 .DS_Store
 deploy/config.php
 deploy/leads.log
+deploy/telegram.php
