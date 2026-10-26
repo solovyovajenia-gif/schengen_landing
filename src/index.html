@@ -26,7 +26,7 @@
   --ease:cubic-bezier(.2,.7,.2,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;overflow-x:clip}
 body{font-family:var(--sans);color:var(--ink);background:var(--mist);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
@@ -105,7 +105,8 @@ em{font-style:italic;color:#55708C}
 .menu-toggle{display:none}
 .mmenu{position:fixed;inset:0;z-index:90;background:var(--mist);padding:96px 24px 40px;display:flex;flex-direction:column;gap:28px;transform:translateY(-8px);opacity:0;visibility:hidden;transition:opacity .35s,transform .35s var(--ease),visibility 0s .35s;overflow:auto}
 .mmenu nav{display:grid;gap:4px}
-.mmenu nav a{font-family:var(--serif);font-size:26px;padding:12px 0;border-bottom:1px solid var(--line);color:var(--navy)}
+.mmenu{overflow-x:hidden}
+.mmenu nav a{font-family:var(--serif);font-size:24px;padding:12px 0;border-bottom:1px solid var(--line);color:var(--navy);word-break:break-word}
 .mmenu .btn{width:100%}
 .mmenu-contacts{display:grid;gap:12px;font-size:15px;color:var(--muted);margin-top:auto}
 .menu-toggle:checked ~ .mmenu{opacity:1;visibility:visible;transform:none;transition:opacity .35s,transform .35s var(--ease)}
@@ -124,7 +125,8 @@ em{font-style:italic;color:#55708C}
 @keyframes drift{to{transform:translate(40px,-30px) scale(1.08)}}
 .hero .container{display:grid;gap:56px;align-items:center}
 @media(min-width:1024px){.hero .container{grid-template-columns:1.05fr 1fr}}
-.hero h1{margin:24px 0 16px;text-wrap:nowrap;font-size:clamp(32px,3.9vw,50px)}
+.hero h1{margin:24px 0 16px;font-size:clamp(32px,3.9vw,50px)}
+@media(min-width:1024px){.hero h1{text-wrap:nowrap}}
 .hero h1 .line{display:block;overflow:hidden;padding:.04em .15em .18em 0;margin-bottom:-.18em}
 .hero h1 .line>span{display:inline-block;transform:translateY(110%);animation:rise 1.1s var(--ease) forwards}
 .hero h1 .line:nth-child(2)>span{animation-delay:.12s}
@@ -616,6 +618,11 @@ em{font-style:italic;color:#55708C}
   .reveal{opacity:1;transform:none}
   .ticker-track{animation-duration:28s!important;animation-iteration-count:infinite!important}
 }
+.lang{position:relative;display:inline-flex;align-items:center;gap:6px;height:44px;padding:0 14px 0 18px;border:1px solid var(--line);border-radius:999px;background:#fff;font-size:12px;letter-spacing:.14em;font-weight:600;cursor:pointer;transition:border-color .3s;color:var(--navy)}
+.lang:hover{border-color:var(--navy)}
+.lang select{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.lang::after{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:translateY(-2px) rotate(45deg)}
+@media(max-width:1023px){.lang{height:38px;font-size:11px;padding:0 12px 0 14px}}
 </style>
 </head>
 <body>
@@ -649,13 +656,13 @@ em{font-style:italic;color:#55708C}
 <input type="checkbox" id="menuToggle" class="menu-toggle" hidden>
 <div class="mmenu">
   <nav>
-    <a href="#destinations">Destinations</a>
-    <a href="#services">Services</a>
-    <a href="#how">How It Works</a>
-    <a href="#faq">FAQ</a>
-    <a href="#contact">Contact</a>
+    <a href="#destinations" data-i18n="nav.dest">Destinations</a>
+    <a href="#services" data-i18n="nav.services">Services</a>
+    <a href="#how" data-i18n="nav.how">How It Works</a>
+    <a href="#faq" data-i18n="nav.faq">FAQ</a>
+    <a href="#contact" data-i18n="nav.contact">Contact</a>
   </nav>
-  <a href="#finalForm" class="btn btn-primary">Check My Case</a>
+  <a href="#finalForm" class="btn btn-primary" data-i18n="cta.check">Check My Case</a>
   <div class="mmenu-contacts">
     <a href="tel:+971542946213">+971 54 294 6213</a>
     <a class="wa-link" href="#" target="_blank" rel="noopener">WhatsApp</a>
@@ -668,14 +675,15 @@ em{font-style:italic;color:#55708C}
   <div class="container">
     <a href="#top" class="logo" aria-label="World Pass"><img src="logo.png" alt="World Pass — Borderless Live" class="logo-img"></a>
     <nav class="nav">
-      <a href="#destinations">Destinations</a>
-      <a href="#services">Services</a>
-      <a href="#how">How It Works</a>
-      <a href="#faq">FAQ</a>
-      <a href="#contact">Contact</a>
+      <a href="#destinations" data-i18n="nav.dest">Destinations</a>
+      <a href="#services" data-i18n="nav.services">Services</a>
+      <a href="#how" data-i18n="nav.how">How It Works</a>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
+      <a href="#contact" data-i18n="nav.contact">Contact</a>
     </nav>
     <div class="header-right">
-      <a href="#finalForm" class="btn btn-ghost header-cta">Check My Case</a>
+      <label class="lang"><span id="langLabel">EN</span><select id="langSel" aria-label="Language"><option value="en">EN</option><option value="ru">RU</option></select></label>
+      <a href="#finalForm" class="btn btn-ghost header-cta" data-i18n="cta.check">Check My Case</a>
       <label class="burger" for="menuToggle" aria-label="Menu"><span></span><span></span><span></span></label>
     </div>
   </div>
@@ -688,18 +696,18 @@ em{font-style:italic;color:#55708C}
   <div class="hero-bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
   <div class="container">
     <div class="h-left">
-      <span class="eyebrow enter h-eyebrow"><span class="eb-l">Schengen · Visa application support · UAE</span><span class="eb-s">Schengen · Visa support</span></span>
-      <h1 class="h-h1"><span class="line"><span>Schengen Visa</span></span><span class="line"><span><em>Application Support</em></span></span></h1>
-      <p class="sub enter h-sub" style="animation-delay:.3s">Private document-preparation and application-review consultancy in the UAE.</p>
-      <p class="lead enter h-lead" style="animation-delay:.35s">We help you understand the requirements, prepare your documents and review your application before you submit it through the official channel.</p>
+      <span class="eyebrow enter h-eyebrow"><span class="eb-l" data-i18n="hero.eyebrow">Schengen · Visa application support · UAE</span><span class="eb-s" data-i18n="hero.eyebrow_s">Schengen · Visa support</span></span>
+      <h1 class="h-h1" data-i18n-html="hero.h1"><span class="line"><span>Schengen Visa</span></span><span class="line"><span><em>Application Support</em></span></span></h1>
+      <p class="sub enter h-sub" style="animation-delay:.3s" data-i18n="hero.sub">Private document-preparation and application-review consultancy in the UAE.</p>
+      <p class="lead enter h-lead" style="animation-delay:.35s" data-i18n="hero.lead">We help you understand the requirements, prepare your documents and review your application before you submit it through the official channel.</p>
       <div class="enter h-cta" style="animation-delay:.6s">
         <div class="cta-row">
-          <a href="#finalForm" class="btn btn-primary"><span>Check My Case</span> <span class="arrow">→</span></a>
-          <a class="btn btn-wa wa-link" href="#" target="_blank" rel="noopener"><svg width="20" height="20"><use href="#i-wa"/></svg><span>Contact Us on WhatsApp</span></a>
+          <a href="#finalForm" class="btn btn-primary"><span data-i18n="cta.check">Check My Case</span> <span class="arrow">→</span></a>
+          <a class="btn btn-wa wa-link" href="#" target="_blank" rel="noopener"><svg width="20" height="20"><use href="#i-wa"/></svg><span data-i18n="cta.wa">Contact Us on WhatsApp</span></a>
         </div>
-        <p class="note"><span class="dot-live"></span><span>Get an initial assessment of your case with our visa consultant.</span></p>
+        <p class="note"><span class="dot-live"></span><span data-i18n="hero.note">Get an initial assessment of your case with our visa consultant.</span></p>
       </div>
-      <p class="legal enter h-legal" style="animation-delay:.7s">We are an independent private travel consultancy, not affiliated with any embassy or government authority. Visa approval is determined exclusively by the relevant authorities.</p>
+      <p class="legal enter h-legal" style="animation-delay:.7s" data-i18n="hero.legal">We are an independent private travel consultancy, not affiliated with any embassy or government authority. Visa approval is determined exclusively by the relevant authorities.</p>
     </div>
 
     <div class="visual enter h-visual" style="animation-delay:.3s" id="visual">
@@ -725,22 +733,23 @@ em{font-style:italic;color:#55708C}
         <div class="st-meta"><div><span>Trip</span><b>Leisure</b></div><div><span>Travellers</span><b>2</b></div><div><span>Seat</span><b>12A</b></div></div>
       </div>
     </div>
-    <p class="vis-note enter" style="animation-delay:.5s">Illustrative graphic — not an official travel document. Visa decisions are made exclusively by the relevant authorities.</p>
+    <p class="vis-note enter" style="animation-delay:.5s" data-i18n="vis.note">Illustrative graphic — not an official travel document. Visa decisions are made exclusively by the relevant authorities.</p>
   </div>
 </section>
 
 <!-- quick form -->
 <div class="container form-dock" id="lead">
   <form class="form-card lead-form" id="leadForm" data-form-name="Schengen — Quick Case Check" novalidate>
-    <header><h3>Check your case in two minutes</h3><p>Our consultant replies during working hours</p></header>
+    <header><h3 data-i18n="qf.title">Check your case in two minutes</h3><p data-i18n="qf.reply">Our consultant replies during working hours</p></header>
     <div class="fields dock">
-      <div class="field"><input name="fname" placeholder=" " required autocomplete="name"><label>Full Name *</label></div>
-      <div class="field"><input name="phone" type="tel" placeholder=" " required autocomplete="tel" inputmode="tel" class="phone"><label>Phone / WhatsApp *</label></div>
-      <div class="field select"><select name="destination" class="dest-select"><option value="" selected>Select a country</option></select><label>Which Schengen country?</label></div>
+      <div class="field"><input name="fname" placeholder=" " required autocomplete="name"><label data-i18n="form.name">Full Name *</label></div>
+      <div class="field"><input name="phone" type="tel" placeholder=" " required autocomplete="tel" inputmode="tel" class="phone"><label data-i18n="form.phone">Phone (+ country code) *</label></div>
+      <div class="field"><input name="alt" placeholder=" " autocomplete="off"><label data-i18n="form.alt">Telegram / WhatsApp (optional)</label></div>
+      <div class="field select"><select name="destination" class="dest-select"><option value="" selected data-i18n="form.selcountry">Select a country</option></select><label data-i18n="form.dest">Which Schengen country?</label></div>
       <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off">
-      <button class="btn btn-primary" type="submit"><span>Check My Case</span> <span class="arrow">→</span></button>
+      <button class="btn btn-primary" type="submit"><span data-i18n="cta.check">Check My Case</span> <span class="arrow">→</span></button>
     </div>
-    <p class="legal">By submitting, you agree to the processing of your information for the purpose of responding to your enquiry. <a href="privacy.html">Privacy Policy</a></p>
+    <p class="legal" data-i18n-html="qf.legal">By submitting, you agree to the processing of your information for the purpose of responding to your enquiry. <a href="privacy.html">Privacy Policy</a></p>
   </form>
 </div>
 
@@ -750,22 +759,22 @@ em{font-style:italic;color:#55708C}
 <section class="section services" id="destinations">
   <div class="container">
     <div class="section-head center">
-      <span class="eyebrow center reveal">Popular destinations</span>
-      <h2 class="reveal">Where Are You <em>Planning to Travel?</em></h2>
-      <p class="lead reveal">Discover personalised Schengen visa application preparation support for your European travel plans.</p>
+      <span class="eyebrow center reveal" data-i18n="dest.eyebrow">Popular destinations</span>
+      <h2 class="reveal" data-i18n-html="dest.h2">Where Are You <em>Planning to Travel?</em></h2>
+      <p class="lead reveal" data-i18n="dest.lead">Discover personalised Schengen visa application preparation support for your European travel plans.</p>
     </div>
     <div class="dest-grid">
-      <a href="#finalForm" class="dest reveal" data-country="France" style="--i:0"><img src="img/france.jpg" alt="Eiffel Tower, Paris" loading="lazy"><span class="cap">Schengen</span><span class="country">France</span><span class="q">Planning a Trip to France?</span><span class="btn">Check My Case</span></a>
-      <a href="#finalForm" class="dest reveal" data-country="Italy" style="--i:1"><img src="img/italy.jpg" alt="Colosseum, Rome" loading="lazy"><span class="cap">Schengen</span><span class="country">Italy</span><span class="q">Planning a Trip to Italy?</span><span class="btn">Check My Case</span></a>
-      <a href="#finalForm" class="dest reveal" data-country="Spain" style="--i:2"><img src="img/spain.jpg" alt="Barcelona from above" loading="lazy"><span class="cap">Schengen</span><span class="country">Spain</span><span class="q">Planning a Trip to Spain?</span><span class="btn">Check My Case</span></a>
-      <a href="#finalForm" class="dest reveal" data-country="Germany" style="--i:3"><img src="img/germany.jpg" alt="Brandenburg Gate, Berlin" loading="lazy"><span class="cap">Schengen</span><span class="country">Germany</span><span class="q">Planning a Trip to Germany?</span><span class="btn">Check My Case</span></a>
-      <a href="#finalForm" class="dest reveal" data-country="Switzerland" style="--i:4"><img src="img/switzerland.jpg" alt="Swiss Alps" loading="lazy"><span class="cap">Schengen</span><span class="country">Switzerland</span><span class="q">Planning a Trip to Switzerland?</span><span class="btn">Check My Case</span></a>
-      <a href="#finalForm" class="dest reveal" data-country="Greece" style="--i:5"><img src="img/greece.jpg" alt="Santorini, Greece" loading="lazy"><span class="cap">Schengen</span><span class="country">Greece</span><span class="q">Planning a Trip to Greece?</span><span class="btn">Check My Case</span></a>
-      <a href="#finalForm" class="dest reveal" data-country="Netherlands" style="--i:6"><img src="img/netherlands.jpg" alt="Amsterdam canal" loading="lazy"><span class="cap">Schengen</span><span class="country">Netherlands</span><span class="q">Planning a Trip to the Netherlands?</span><span class="btn">Check My Case</span></a>
-      <a href="#finalForm" class="dest reveal" data-country="Austria" style="--i:7"><img src="img/austria.jpg" alt="Vienna skyline" loading="lazy"><span class="cap">Schengen</span><span class="country">Austria</span><span class="q">Planning a Trip to Austria?</span><span class="btn">Check My Case</span></a>
-      <a href="#finalForm" class="dest other reveal" data-country="Other Schengen country" style="--i:8"><span class="cap">29 countries</span><span class="country">Another country?</span><span class="q">Portugal, Belgium, Czech Republic, Poland, Hungary, Croatia, the Nordics and every other Schengen State — we help with all of them.</span><span class="btn">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="France" style="--i:0"><img src="img/france.jpg" alt="Eiffel Tower, Paris" loading="lazy"><span class="cap">Schengen</span><span class="country" data-i18n="c.france">France</span><span class="q" data-i18n="cq.france">Planning a Trip to France?</span><span class="btn" data-i18n="cta.check">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Italy" style="--i:1"><img src="img/italy.jpg" alt="Colosseum, Rome" loading="lazy"><span class="cap">Schengen</span><span class="country" data-i18n="c.italy">Italy</span><span class="q" data-i18n="cq.italy">Planning a Trip to Italy?</span><span class="btn" data-i18n="cta.check">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Spain" style="--i:2"><img src="img/spain.jpg" alt="Barcelona from above" loading="lazy"><span class="cap">Schengen</span><span class="country" data-i18n="c.spain">Spain</span><span class="q" data-i18n="cq.spain">Planning a Trip to Spain?</span><span class="btn" data-i18n="cta.check">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Germany" style="--i:3"><img src="img/germany.jpg" alt="Brandenburg Gate, Berlin" loading="lazy"><span class="cap">Schengen</span><span class="country" data-i18n="c.germany">Germany</span><span class="q" data-i18n="cq.germany">Planning a Trip to Germany?</span><span class="btn" data-i18n="cta.check">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Switzerland" style="--i:4"><img src="img/switzerland.jpg" alt="Swiss Alps" loading="lazy"><span class="cap">Schengen</span><span class="country" data-i18n="c.switzerland">Switzerland</span><span class="q" data-i18n="cq.switzerland">Planning a Trip to Switzerland?</span><span class="btn" data-i18n="cta.check">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Greece" style="--i:5"><img src="img/greece.jpg" alt="Santorini, Greece" loading="lazy"><span class="cap">Schengen</span><span class="country" data-i18n="c.greece">Greece</span><span class="q" data-i18n="cq.greece">Planning a Trip to Greece?</span><span class="btn" data-i18n="cta.check">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Netherlands" style="--i:6"><img src="img/netherlands.jpg" alt="Amsterdam canal" loading="lazy"><span class="cap">Schengen</span><span class="country" data-i18n="c.netherlands">Netherlands</span><span class="q" data-i18n="cq.netherlands">Planning a Trip to the Netherlands?</span><span class="btn" data-i18n="cta.check">Check My Case</span></a>
+      <a href="#finalForm" class="dest reveal" data-country="Austria" style="--i:7"><img src="img/austria.jpg" alt="Vienna skyline" loading="lazy"><span class="cap">Schengen</span><span class="country" data-i18n="c.austria">Austria</span><span class="q" data-i18n="cq.austria">Planning a Trip to Austria?</span><span class="btn" data-i18n="cta.check">Check My Case</span></a>
+      <a href="#finalForm" class="dest other reveal" data-country="Other Schengen country" style="--i:8"><span class="cap" data-i18n="c.cap29">29 countries</span><span class="country" data-i18n="c.other">Another country?</span><span class="q" data-i18n="cq.other">Portugal, Belgium, Czech Republic, Poland, Hungary, Croatia, the Nordics and every other Schengen State — we help with all of them.</span><span class="btn" data-i18n="cta.check">Check My Case</span></a>
     </div>
-    <p class="dest-note reveal"><svg><use href="#i-info"/></svg><span>The country you apply to is determined by your actual itinerary and the applicable Schengen visa rules — the main destination or the first point of entry — not only by preference. We help you understand which rule applies to your trip.</span></p>
+    <p class="dest-note reveal"><svg><use href="#i-info"/></svg><span data-i18n="dest.note">The country you apply to is determined by your actual itinerary and the applicable Schengen visa rules — the main destination or the first point of entry — not only by preference. We help you understand which rule applies to your trip.</span></p>
   </div>
 </section>
 
@@ -773,36 +782,36 @@ em{font-style:italic;color:#55708C}
 <section class="section" id="services">
   <div class="container">
     <div class="section-head">
-      <span class="eyebrow reveal">Our services</span>
-      <h2 class="reveal">Schengen Visa <em>Application Support</em></h2>
-      <p class="lead reveal">We help you prepare a clear, complete and well-organised application package before submission.</p>
+      <span class="eyebrow reveal" data-i18n="sv.eyebrow">Our services</span>
+      <h2 class="reveal" data-i18n-html="sv.h2">Schengen Visa <em>Application Support</em></h2>
+      <p class="lead reveal" data-i18n="sv.lead">We help you prepare a clear, complete and well-organised application package before submission.</p>
     </div>
     <div class="cards6">
-      <article class="svc reveal" style="--i:0"><span class="num">01</span><div class="ic"><svg><use href="#i-search"/></svg></div><h3>Case Assessment</h3><p>We review your nationality, UAE residence status, travel itinerary and previous visa history to understand your situation.</p></article>
-      <article class="svc reveal" style="--i:1"><span class="num">02</span><div class="ic"><svg><use href="#i-list"/></svg></div><h3>Document Preparation</h3><p>Receive guidance on preparing the supporting documents relevant to your destination and circumstances.</p></article>
-      <article class="svc reveal" style="--i:2"><span class="num">03</span><div class="ic"><svg><use href="#i-form"/></svg></div><h3>Application Form Assistance</h3><p>We help you complete and review your Schengen visa application form.</p></article>
-      <article class="svc reveal" style="--i:3"><span class="num">04</span><div class="ic"><svg><use href="#i-docs"/></svg></div><h3>Document Review</h3><p>Our consultants go through your documents with you and point out missing information or inconsistencies.</p></article>
-      <article class="svc reveal" style="--i:4"><span class="num">05</span><div class="ic"><svg><use href="#i-cal"/></svg></div><h3>Appointment <span class="amp">&amp;</span> Submission Guidance</h3><p>We explain how the official appointment and submission process works and what steps you may need to take.</p></article>
-      <article class="svc hl reveal" style="--i:5"><span class="tag">Before you submit</span><span class="num">06</span><div class="ic"><svg><use href="#i-shield"/></svg></div><h3>Final Application Check</h3><p>We review your prepared application package before submission through the appropriate official channel.</p></article>
+      <article class="svc reveal" style="--i:0"><span class="num">01</span><div class="ic"><svg><use href="#i-search"/></svg></div><h3 data-i18n="sv1t">Case Assessment</h3><p data-i18n="sv1d">We review your nationality, UAE residence status, travel itinerary and previous visa history to understand your situation.</p></article>
+      <article class="svc reveal" style="--i:1"><span class="num">02</span><div class="ic"><svg><use href="#i-list"/></svg></div><h3 data-i18n="sv2t">Document Preparation</h3><p data-i18n="sv2d">Receive guidance on preparing the supporting documents relevant to your destination and circumstances.</p></article>
+      <article class="svc reveal" style="--i:2"><span class="num">03</span><div class="ic"><svg><use href="#i-form"/></svg></div><h3 data-i18n="sv3t">Application Form Assistance</h3><p data-i18n="sv3d">We help you complete and review your Schengen visa application form.</p></article>
+      <article class="svc reveal" style="--i:3"><span class="num">04</span><div class="ic"><svg><use href="#i-docs"/></svg></div><h3 data-i18n="sv4t">Document Review</h3><p data-i18n="sv4d">Our consultants go through your documents with you and point out missing information or inconsistencies.</p></article>
+      <article class="svc reveal" style="--i:4"><span class="num">05</span><div class="ic"><svg><use href="#i-cal"/></svg></div><h3 data-i18n-html="sv5t">Appointment <span class="amp">&amp;</span> Submission Guidance</h3><p data-i18n="sv5d">We explain how the official appointment and submission process works and what steps you may need to take.</p></article>
+      <article class="svc hl reveal" style="--i:5"><span class="tag" data-i18n="sv.tag">Before you submit</span><span class="num">06</span><div class="ic"><svg><use href="#i-shield"/></svg></div><h3 data-i18n="sv6t">Final Application Check</h3><p data-i18n="sv6d">We review your prepared application package before submission through the appropriate official channel.</p></article>
     </div>
     <div class="svc-photo reveal">
       <div class="svc-visual">
         <img src="img/who.jpg" alt="Historic European town street" loading="lazy">
         <div class="checklist" id="checklist">
-          <div class="clip"><span>Your checklist</span><span>Reviewed</span></div>
+          <div class="clip"><span data-i18n="cl.title">Your checklist</span><span data-i18n="cl.reviewed">Reviewed</span></div>
           <ul>
-            <li><span class="box" style="--i:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>Passport</span><small>validity</small></li>
-            <li><span class="box" style="--i:1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>Application form</span><small>complete</small></li>
-            <li><span class="box" style="--i:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>Itinerary <span class="amp">&amp;</span> bookings</span><small>dates match</small></li>
-            <li><span class="box" style="--i:3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span>Travel insurance</span><small>coverage</small></li>
+            <li><span class="box" style="--i:0"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span data-i18n="cl.passport">Passport</span><small data-i18n="cl.passport_s">validity</small></li>
+            <li><span class="box" style="--i:1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span data-i18n="cl.form">Application form</span><small data-i18n="cl.form_s">complete</small></li>
+            <li><span class="box" style="--i:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span data-i18n-html="cl.itin">Itinerary <span class="amp">&amp;</span> bookings</span><small data-i18n="cl.itin_s">dates match</small></li>
+            <li><span class="box" style="--i:3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span><span data-i18n="cl.ins">Travel insurance</span><small data-i18n="cl.ins_s">coverage</small></li>
           </ul>
         </div>
       </div>
       <div>
-        <span class="eyebrow">One package, reviewed</span>
-        <h3 style="margin-top:18px">A well-organised file is easier to submit</h3>
-        <p>Missing pages, inconsistent dates or unclear itineraries often mean extra work at the visa centre. We help you organise your documents before you submit.</p>
-        <a href="#finalForm" class="btn btn-primary"><span>Check My Case</span> <span class="arrow">→</span></a>
+        <span class="eyebrow" data-i18n="sp.eyebrow">One package, reviewed</span>
+        <h3 style="margin-top:18px" data-i18n="sp.h3">A well-organised file is easier to submit</h3>
+        <p data-i18n="sp.p">Missing pages, inconsistent dates or unclear itineraries often mean extra work at the visa centre. We help you organise your documents before you submit.</p>
+        <a href="#finalForm" class="btn btn-primary"><span data-i18n="cta.check">Check My Case</span> <span class="arrow">→</span></a>
       </div>
     </div>
   </div>
@@ -813,20 +822,20 @@ em{font-style:italic;color:#55708C}
   <div class="stars"></div><div class="glow"></div><div class="glow g2"></div>
   <div class="container">
     <div class="section-head">
-      <span class="eyebrow reveal">Who we work with</span>
-      <h2 class="reveal">Who We <em>Work With</em></h2>
-      <p class="lead reveal">Whether you are preparing your first Schengen visa application or planning another European trip, we can help you understand the process.</p>
+      <span class="eyebrow reveal" data-i18n="wh.eyebrow">Who we work with</span>
+      <h2 class="reveal" data-i18n-html="wh.h2">Who We <em>Work With</em></h2>
+      <p class="lead reveal" data-i18n="wh.lead">Whether you are preparing your first Schengen visa application or planning another European trip, we can help you understand the process.</p>
     </div>
     <ol class="chain">
-      <li class="ch reveal" style="--i:0"><div class="ic"><svg><use href="#i-first"/></svg></div><div class="ch-body"><h3>First-Time Applicants</h3><p>Applying for your first Schengen visa? We can guide you through the preparation process.</p></div></li>
-      <li class="ch reveal" style="--i:1"><div class="ic"><svg><use href="#i-home"/></svg></div><div class="ch-body"><h3>UAE Residents</h3><p>Get document preparation guidance based on your nationality, residence status and travel plans.</p></div></li>
-      <li class="ch reveal" style="--i:2"><div class="ic"><svg><use href="#i-family"/></svg></div><div class="ch-body"><h3>Families <span class="amp">&amp;</span> Couples</h3><p>We help families and couples organise application documents for their planned trip.</p></div></li>
-      <li class="ch reveal" style="--i:3"><div class="ic"><svg><use href="#i-redo"/></svg></div><div class="ch-body"><h3>Travellers with Previous Refusals</h3><p>Had a visa refusal before? We can review your circumstances and help you prepare a new application.</p></div></li>
-      <li class="ch reveal" style="--i:4"><div class="ic"><svg><use href="#i-bag"/></svg></div><div class="ch-body"><h3>Busy Professionals</h3><p>Get structured support with forms, document checklists and application preparation.</p></div></li>
+      <li class="ch reveal" style="--i:0"><div class="ic"><svg><use href="#i-first"/></svg></div><div class="ch-body"><h3 data-i18n="wh1t">First-Time Applicants</h3><p data-i18n="wh1d">Applying for your first Schengen visa? We can guide you through the preparation process.</p></div></li>
+      <li class="ch reveal" style="--i:1"><div class="ic"><svg><use href="#i-home"/></svg></div><div class="ch-body"><h3 data-i18n="wh2t">UAE Residents</h3><p data-i18n="wh2d">Get document preparation guidance based on your nationality, residence status and travel plans.</p></div></li>
+      <li class="ch reveal" style="--i:2"><div class="ic"><svg><use href="#i-family"/></svg></div><div class="ch-body"><h3 data-i18n-html="wh3t">Families <span class="amp">&amp;</span> Couples</h3><p data-i18n="wh3d">We help families and couples organise application documents for their planned trip.</p></div></li>
+      <li class="ch reveal" style="--i:3"><div class="ic"><svg><use href="#i-redo"/></svg></div><div class="ch-body"><h3 data-i18n="wh4t">Travellers with Previous Refusals</h3><p data-i18n="wh4d">Had a visa refusal before? We can review your circumstances and help you prepare a new application.</p></div></li>
+      <li class="ch reveal" style="--i:4"><div class="ic"><svg><use href="#i-bag"/></svg></div><div class="ch-body"><h3 data-i18n="wh5t">Busy Professionals</h3><p data-i18n="wh5d">Get structured support with forms, document checklists and application preparation.</p></div></li>
     </ol>
     <div class="dark-cta reveal">
-      <p>We look at your situation <em>before</em> you commit to any paid service</p>
-      <a href="#finalForm" class="btn btn-gold"><span>Check My Case</span> <span class="arrow">→</span></a>
+      <p data-i18n-html="wh.cta">We look at your situation <em>before</em> you commit to any paid service</p>
+      <a href="#finalForm" class="btn btn-gold"><span data-i18n="cta.check">Check My Case</span> <span class="arrow">→</span></a>
     </div>
   </div>
 </section>
@@ -835,18 +844,18 @@ em{font-style:italic;color:#55708C}
 <section class="section services" id="how">
   <div class="container">
     <div class="section-head">
-      <span class="eyebrow reveal">How it works</span>
-      <h2 class="reveal">Your Schengen Visa Preparation <em>in 4 Simple Steps</em></h2>
-      <p class="lead reveal">From your first consultation to preparing your application for submission.</p>
+      <span class="eyebrow reveal" data-i18n="hw.eyebrow">How it works</span>
+      <h2 class="reveal" data-i18n-html="hw.h2">Your Schengen Visa Preparation <em>in 4 Simple Steps</em></h2>
+      <p class="lead reveal" data-i18n="hw.lead">From your first consultation to preparing your application for submission.</p>
     </div>
     <div class="timeline" id="timeline">
       <div class="tl-line"><i></i></div>
-      <div class="tl-step"><span class="tl-dot">01</span><b>Tell Us About Your Trip</b><p>Share your destination, approximate travel dates, nationality and residence status.</p></div>
-      <div class="tl-step"><span class="tl-dot">02</span><b>Get Your Case Assessment</b><p>Our consultant reviews your situation and explains the applicable requirements and preparation steps.</p></div>
-      <div class="tl-step"><span class="tl-dot">03</span><b>Prepare Your Documents</b><p>We help you prepare your application form and supporting documents based on your circumstances.</p></div>
-      <div class="tl-step"><span class="tl-dot">04</span><b>Submit Through Official Channels</b><p>You submit your application through the appropriate embassy, consulate or authorised visa application centre.</p></div>
+      <div class="tl-step"><span class="tl-dot">01</span><b data-i18n="hw1t">Tell Us About Your Trip</b><p data-i18n="hw1d">Share your destination, approximate travel dates, nationality and residence status.</p></div>
+      <div class="tl-step"><span class="tl-dot">02</span><b data-i18n="hw2t">Get Your Case Assessment</b><p data-i18n="hw2d">Our consultant reviews your situation and explains the applicable requirements and preparation steps.</p></div>
+      <div class="tl-step"><span class="tl-dot">03</span><b data-i18n="hw3t">Prepare Your Documents</b><p data-i18n="hw3d">We help you prepare your application form and supporting documents based on your circumstances.</p></div>
+      <div class="tl-step"><span class="tl-dot">04</span><b data-i18n="hw4t">Submit Through Official Channels</b><p data-i18n="hw4d">You submit your application through the appropriate embassy, consulate or authorised visa application centre.</p></div>
     </div>
-    <div class="center-cta"><a href="#finalForm" class="btn btn-primary"><span>Check My Case</span> <span class="arrow">→</span></a></div>
+    <div class="center-cta"><a href="#finalForm" class="btn btn-primary"><span data-i18n="cta.check">Check My Case</span> <span class="arrow">→</span></a></div>
   </div>
 </section>
 
@@ -854,20 +863,20 @@ em{font-style:italic;color:#55708C}
 <section class="section" id="trust">
   <div class="container why">
     <div>
-      <span class="eyebrow reveal">Why clients choose us</span>
-      <h2 class="reveal" style="margin-top:20px">Guidance You <em>Can Rely On</em></h2>
-      <p class="lead reveal" style="margin-top:20px">We focus on helping you understand the requirements and prepare your application with clarity.</p>
+      <span class="eyebrow reveal" data-i18n="tr.eyebrow">Why clients choose us</span>
+      <h2 class="reveal" style="margin-top:20px" data-i18n-html="tr.h2">Guidance You <em>Can Rely On</em></h2>
+      <p class="lead reveal" style="margin-top:20px" data-i18n="tr.lead">We focus on helping you understand the requirements and prepare your application with clarity.</p>
       <div class="why-list">
-        <div class="why-item reveal" style="--i:0"><span class="n">01</span><div><b>Personalised Approach</b><span>Guidance based on your individual circumstances and travel plans.</span></div></div>
-        <div class="why-item reveal" style="--i:1"><span class="n">02</span><div><b>Document-Focused Support</b><span>Careful review of your documents before submission.</span></div></div>
-        <div class="why-item reveal" style="--i:2"><span class="n">03</span><div><b>Transparent Service Terms</b><span>Our consulting services and applicable fees are explained before you proceed.</span></div></div>
-        <div class="why-item reveal" style="--i:3"><span class="n">04</span><div><b>One Point of Contact</b><span>Your consultant stays in touch throughout preparation — on WhatsApp or Telegram.</span></div></div>
+        <div class="why-item reveal" style="--i:0"><span class="n">01</span><div><b data-i18n="tr1t">Personalised Approach</b><span data-i18n="tr1d">Guidance based on your individual circumstances and travel plans.</span></div></div>
+        <div class="why-item reveal" style="--i:1"><span class="n">02</span><div><b data-i18n="tr2t">Document-Focused Support</b><span data-i18n="tr2d">Careful review of your documents before submission.</span></div></div>
+        <div class="why-item reveal" style="--i:2"><span class="n">03</span><div><b data-i18n="tr3t">Transparent Service Terms</b><span data-i18n="tr3d">Our consulting services and applicable fees are explained before you proceed.</span></div></div>
+        <div class="why-item reveal" style="--i:3"><span class="n">04</span><div><b data-i18n="tr4t">One Point of Contact</b><span data-i18n="tr4d">Your consultant stays in touch throughout preparation — on WhatsApp or Telegram.</span></div></div>
       </div>
     </div>
     <div class="photo-stack reveal">
       <div class="frame"></div>
       <div class="ph-main"><img src="img/switzerland.jpg" alt="Alpine meadow and mountains" loading="lazy"></div>
-      <div class="photo-card"><div class="ic"><svg><use href="#i-chat"/></svg></div><div><b>Questions along the way?</b><small>Your consultant stays available throughout preparation</small></div></div>
+      <div class="photo-card"><div class="ic"><svg><use href="#i-chat"/></svg></div><div><b data-i18n="tr.card">Questions along the way?</b><small data-i18n="tr.card_s">Your consultant stays available throughout preparation</small></div></div>
     </div>
   </div>
 </section>
@@ -877,16 +886,16 @@ em{font-style:italic;color:#55708C}
   <div class="container">
     <div class="section-head center">
       <span class="eyebrow center reveal">FAQ</span>
-      <h2 class="reveal">Frequently Asked Questions</h2>
+      <h2 class="reveal" data-i18n="fq.h2">Frequently Asked Questions</h2>
     </div>
     <div class="faq reveal">
-      <details open><summary><span>Do you issue Schengen visas?</span><span class="pm"></span></summary><div class="ans"><div><p>No. We are a private consultancy providing visa application preparation and guidance services. Schengen visas are issued exclusively by the responsible government authorities.</p></div></div></details>
-      <details><summary><span>Can you guarantee visa approval?</span><span class="pm"></span></summary><div class="ans"><div><p>No. Approval decisions are made exclusively by the relevant authorities. No private consultant can guarantee visa approval.</p></div></div></details>
-      <details><summary><span>Can I apply without using your services?</span><span class="pm"></span></summary><div class="ans"><div><p>Yes. You can prepare and submit your Schengen visa application independently through the appropriate official channels.</p></div></div></details>
-      <details><summary><span>Which Schengen country should I apply to?</span><span class="pm"></span></summary><div class="ans"><div><p>The appropriate country depends on your actual itinerary and applicable Schengen visa rules. We can help you understand the relevant requirements.</p></div></div></details>
-      <details><summary><span>How long does the visa process take?</span><span class="pm"></span></summary><div class="ans"><div><p>Processing times and appointment availability vary depending on the destination, season and individual circumstances. We cannot guarantee specific timelines.</p></div></div></details>
-      <details><summary><span>Are government visa fees included?</span><span class="pm"></span></summary><div class="ans"><div><p>Government, consular and authorised visa application centre fees are separate unless expressly included in your service agreement.</p></div></div></details>
-      <details><summary><span>Can you help with an appointment?</span><span class="pm"></span></summary><div class="ans"><div><p>We can explain the official appointment booking process. Availability is controlled by the relevant official authorities and authorised service providers.</p></div></div></details>
+      <details open><summary><span data-i18n="fq1q">Do you issue Schengen visas?</span><span class="pm"></span></summary><div class="ans"><div><p data-i18n="fq1a">No. We are a private consultancy providing visa application preparation and guidance services. Schengen visas are issued exclusively by the responsible government authorities.</p></div></div></details>
+      <details><summary><span data-i18n="fq2q">Can you guarantee visa approval?</span><span class="pm"></span></summary><div class="ans"><div><p data-i18n="fq2a">No. Approval decisions are made exclusively by the relevant authorities. No private consultant can guarantee visa approval.</p></div></div></details>
+      <details><summary><span data-i18n="fq3q">Can I apply without using your services?</span><span class="pm"></span></summary><div class="ans"><div><p data-i18n="fq3a">Yes. You can prepare and submit your Schengen visa application independently through the appropriate official channels.</p></div></div></details>
+      <details><summary><span data-i18n="fq4q">Which Schengen country should I apply to?</span><span class="pm"></span></summary><div class="ans"><div><p data-i18n="fq4a">The appropriate country depends on your actual itinerary and applicable Schengen visa rules. We can help you understand the relevant requirements.</p></div></div></details>
+      <details><summary><span data-i18n="fq5q">How long does the visa process take?</span><span class="pm"></span></summary><div class="ans"><div><p data-i18n="fq5a">Processing times and appointment availability vary depending on the destination, season and individual circumstances. We cannot guarantee specific timelines.</p></div></div></details>
+      <details><summary><span data-i18n="fq6q">Are government visa fees included?</span><span class="pm"></span></summary><div class="ans"><div><p data-i18n="fq6a">Government, consular and authorised visa application centre fees are separate unless expressly included in your service agreement.</p></div></div></details>
+      <details><summary><span data-i18n="fq7q">Can you help with an appointment?</span><span class="pm"></span></summary><div class="ans"><div><p data-i18n="fq7a">We can explain the official appointment booking process. Availability is controlled by the relevant official authorities and authorised service providers.</p></div></div></details>
     </div>
   </div>
 </section>
@@ -896,13 +905,13 @@ em{font-style:italic;color:#55708C}
   <div class="container">
     <div class="pano reveal">
       <img src="img/cta.jpg" alt="Paris at dusk" loading="lazy">
-      <span class="eyebrow" style="color:var(--gold)">Start here</span>
-      <h2>Your European Journey Starts <em>with Good Preparation</em></h2>
-      <p>Tell us about your travel plans. Our consultant will help you understand the next steps in preparing your Schengen visa application.</p>
+      <span class="eyebrow" style="color:var(--gold)" data-i18n="pn.eyebrow">Start here</span>
+      <h2 data-i18n-html="pn.h2">Your European Journey Starts <em>with Good Preparation</em></h2>
+      <p data-i18n="pn.p">Tell us about your travel plans. Our consultant will help you understand the next steps in preparing your Schengen visa application.</p>
       <div class="cta-row">
-        <a href="#finalForm" class="btn btn-light"><span>Check My Case</span> <span class="arrow">→</span></a>
-        <a class="btn btn-wa wa-link" href="#" target="_blank" rel="noopener"><svg width="20" height="20"><use href="#i-wa"/></svg><span>Chat on WhatsApp</span></a>
-        <a class="btn btn-tg" href="https://t.me/worldpassae" target="_blank" rel="noopener"><svg width="20" height="20"><use href="#i-tg"/></svg><span>Telegram</span></a>
+        <a href="#finalForm" class="btn btn-light"><span data-i18n="cta.check">Check My Case</span> <span class="arrow">→</span></a>
+        <a class="btn btn-wa wa-link" href="#" target="_blank" rel="noopener"><svg width="20" height="20"><use href="#i-wa"/></svg><span data-i18n="cta.wachat">Chat on WhatsApp</span></a>
+        <a class="btn btn-tg" href="https://t.me/worldpassae" target="_blank" rel="noopener"><svg width="20" height="20"><use href="#i-tg"/></svg><span data-i18n="cta.tg">Telegram</span></a>
       </div>
     </div>
   </div>
@@ -915,26 +924,27 @@ em{font-style:italic;color:#55708C}
       <img class="final-bg" src="img/netherlands.jpg" alt="" loading="lazy">
       <div class="orbit"></div><div class="orbit o2"></div>
       <div>
-        <span class="eyebrow" style="color:var(--gold)">Consultation request</span>
-        <h2 style="margin-top:20px">Let's Discuss <em>Your Travel Plans</em></h2>
-        <p class="lead">Answer a few quick questions and our consultant will contact you to discuss your application preparation needs.</p>
+        <span class="eyebrow" style="color:var(--gold)" data-i18n="lf.eyebrow">Consultation request</span>
+        <h2 style="margin-top:20px" data-i18n-html="lf.h2">Let's Discuss <em>Your Travel Plans</em></h2>
+        <p class="lead" data-i18n="lf.lead">Answer a few quick questions and our consultant will contact you to discuss your application preparation needs.</p>
         <div class="expert">
           <img src="img/consultant.jpg" alt="World Pass visa consultant">
-          <div><b>Your visa consultant</b><small>Reviews your case, prepares your checklist and checks your package before submission. On WhatsApp and Telegram.</small></div>
+          <div><b data-i18n="lf.exp">Your visa consultant</b><small data-i18n="lf.exp_s">Reviews your case, prepares your checklist and checks your package before submission. On WhatsApp and Telegram.</small></div>
         </div>
       </div>
       <form class="form-card lead-form" id="finalForm" data-form-name="Schengen — Consultation Request" novalidate>
         <div class="fields">
-          <div class="field"><input name="fname" placeholder=" " required autocomplete="name"><label>Full Name *</label></div>
-          <div class="field"><input name="phone" type="tel" placeholder=" " required inputmode="tel" class="phone"><label>Phone / WhatsApp *</label></div>
-          <div class="field select full"><select name="destination" class="dest-select"><option value="" selected>Select a country</option></select><label>Schengen country to visit</label></div>
-          <div class="field"><input name="dates" placeholder=" " autocomplete="off"><label>Travel dates (approx.)</label></div>
-          <div class="field select"><select name="prev"><option value="" selected>Select</option><option>Yes</option><option>No</option></select><label>Had a Schengen visa before?</label></div>
+          <div class="field"><input name="fname" placeholder=" " required autocomplete="name"><label data-i18n="form.name">Full Name *</label></div>
+          <div class="field"><input name="phone" type="tel" placeholder=" " required inputmode="tel" class="phone"><label data-i18n="form.phone">Phone (+ country code) *</label></div>
+          <div class="field"><input name="alt" placeholder=" " autocomplete="off"><label data-i18n="form.alt">Telegram / WhatsApp (optional)</label></div>
+          <div class="field select full"><select name="destination" class="dest-select"><option value="" selected data-i18n="form.selcountry">Select a country</option></select><label data-i18n="form.dest2">Schengen country to visit</label></div>
+          <div class="field"><input name="dates" placeholder=" " autocomplete="off"><label data-i18n="form.dates">Travel dates (approx.)</label></div>
+          <div class="field select"><select name="prev"><option value="" selected data-i18n="form.sel">Select</option><option data-i18n="form.yes">Yes</option><option data-i18n="form.no">No</option></select><label data-i18n="form.prev">Had a Schengen visa before?</label></div>
           <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off">
-          <label class="consent full"><input type="checkbox" name="consent" required><span>I have read the <a href="privacy.html" style="text-decoration:underline">Privacy Policy</a> and consent to the processing of my information for the purpose of responding to my enquiry.</span></label>
-          <button class="btn btn-primary full" type="submit"><span>Request a Consultation</span> <span class="arrow">→</span></button>
+          <label class="consent full"><input type="checkbox" name="consent" required><span data-i18n-html="form.consent">I have read the <a href="privacy.html" style="text-decoration:underline">Privacy Policy</a> and consent to the processing of my information for the purpose of responding to my enquiry.</span></label>
+          <button class="btn btn-primary full" type="submit"><span data-i18n="cta.request">Request a Consultation</span> <span class="arrow">→</span></button>
         </div>
-        <p class="legal">* Required fields. We are an independent private travel consultancy, not affiliated with any embassy or government authority. We do not issue visas or guarantee visa approval.</p>
+        <p class="legal" data-i18n="lf.legal">* Required fields. We are an independent private travel consultancy, not affiliated with any embassy or government authority. We do not issue visas or guarantee visa approval.</p>
       </form>
     </div>
   </div>
@@ -944,14 +954,14 @@ em{font-style:italic;color:#55708C}
 <section class="section" style="padding:0 0 56px">
   <div class="container">
     <div class="info reveal">
-      <h2>Important Information About Our Services</h2>
-      <p>World Pass is an independent private travel company providing Schengen visa application consulting, document preparation and guidance services.</p>
-      <p>We are not affiliated with any embassy, consulate, government agency or authorised visa application centre.</p>
-      <p>We do not issue visas, make immigration decisions or guarantee visa approval, appointment availability or processing timelines.</p>
-      <p>Applicants may prepare and submit their visa applications independently without using our paid services.</p>
-      <p>All final visa decisions are made exclusively by the relevant government authorities.</p>
-      <p>Government and consular fees are separate from our consulting fees unless otherwise specified.</p>
-      <a class="link" href="https://home-affairs.ec.europa.eu/policies/schengen-borders-and-visa/visa-policy_en" target="_blank" rel="noopener">Official Schengen Visa Information →</a>
+      <h2 data-i18n="ii.h2">Important Information About Our Services</h2>
+      <p data-i18n="ii1">World Pass is an independent private travel company providing Schengen visa application consulting, document preparation and guidance services.</p>
+      <p data-i18n="ii2">We are not affiliated with any embassy, consulate, government agency or authorised visa application centre.</p>
+      <p data-i18n="ii3">We do not issue visas, make immigration decisions or guarantee visa approval, appointment availability or processing timelines.</p>
+      <p data-i18n="ii4">Applicants may prepare and submit their visa applications independently without using our paid services.</p>
+      <p data-i18n="ii5">All final visa decisions are made exclusively by the relevant government authorities.</p>
+      <p data-i18n="ii6">Government and consular fees are separate from our consulting fees unless otherwise specified.</p>
+      <a class="link" href="https://home-affairs.ec.europa.eu/policies/schengen-borders-and-visa/visa-policy_en" target="_blank" rel="noopener" data-i18n="ii.link">Official Schengen Visa Information →</a>
     </div>
   </div>
 </section>
@@ -960,9 +970,9 @@ em{font-style:italic;color:#55708C}
 <section class="section services" id="contact" style="padding-top:72px">
   <div class="container contact">
     <div>
-      <span class="eyebrow reveal">Contact</span>
-      <h2 class="reveal" style="margin-top:20px">Contact <em>Our Team</em></h2>
-      <p class="lead reveal" style="margin-top:20px">Have questions about preparing your Schengen visa application? Contact our team to discuss your travel plans and the support you may need.</p>
+      <span class="eyebrow reveal" data-i18n="ct.eyebrow">Contact</span>
+      <h2 class="reveal" style="margin-top:20px" data-i18n-html="ct.h2">Contact <em>Our Team</em></h2>
+      <p class="lead reveal" style="margin-top:20px" data-i18n="ct.lead">Have questions about preparing your Schengen visa application? Contact our team to discuss your travel plans and the support you may need.</p>
       <div class="c-icons reveal">
         <a class="c-ic wa-link" href="#" target="_blank" rel="noopener"><span class="sq wa"><svg><use href="#i-wa"/></svg></span><small>WhatsApp</small></a>
         <a class="c-ic" href="https://t.me/worldpassae" target="_blank" rel="noopener"><span class="sq tg"><svg><use href="#i-tg"/></svg></span><small>Telegram</small></a>
@@ -971,11 +981,11 @@ em{font-style:italic;color:#55708C}
       </div>
     </div>
     <div class="c-list reveal">
-      <div class="c-row"><span>Company</span><b>World Pass Services FZ-LLC</b></div>
-      <div class="c-row"><span>Location</span><b>Dubai, United Arab Emirates</b></div>
-      <div class="c-row"><span>Phone</span><b><a href="tel:+971542946213">+971 54 294 6213</a></b></div>
-      <div class="c-row"><span>Email</span><b class="tba">will be added</b></div>
-      <div class="c-row"><span>Working hours</span><b>Mon–Sat, 10:00–19:00 (GST)</b></div>
+      <div class="c-row"><span data-i18n="ct.company">Company</span><b>World Pass Services FZ-LLC</b></div>
+      <div class="c-row"><span data-i18n="ct.location">Location</span><b data-i18n="ct.location_v">Dubai, United Arab Emirates</b></div>
+      <div class="c-row"><span data-i18n="ct.phone">Phone</span><b><a href="tel:+971542946213">+971 54 294 6213</a></b></div>
+      <div class="c-row"><span data-i18n="ct.email">Email</span><b class="tba" data-i18n="ct.email_v">will be added</b></div>
+      <div class="c-row"><span data-i18n="ct.hours">Working hours</span><b data-i18n="ct.hours_v">Mon–Sat, 10:00–19:00 (GST)</b></div>
     </div>
   </div>
 </section>
@@ -988,34 +998,34 @@ em{font-style:italic;color:#55708C}
     <div class="f-grid">
       <div class="f-brand">
         <a href="#top" class="logo"><img src="logo.png" alt="World Pass — Borderless Live" class="logo-img"></a>
-        <p>Private Schengen visa application consulting and document preparation support for travellers based in the UAE.</p>
+        <p data-i18n="ft.about">Private Schengen visa application consulting and document preparation support for travellers based in the UAE.</p>
       </div>
       <div>
-        <h5>Navigation</h5>
+        <h5 data-i18n="ft.nav">Navigation</h5>
         <ul>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#how">How It Works</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="#contact">Contact Us</a></li>
+          <li><a href="#services" data-i18n="nav.services">Services</a></li>
+          <li><a href="#how" data-i18n="nav.how">How It Works</a></li>
+          <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
+          <li><a href="#contact" data-i18n="ft.contact">Contact Us</a></li>
         </ul>
       </div>
       <div>
-        <h5>Legal</h5>
+        <h5 data-i18n="ft.legalh">Legal</h5>
         <ul>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="terms.html">Terms &amp; Conditions</a></li>
-          <li><a href="refund.html">Refund Policy</a></li>
-          <li><a href="disclaimer.html">Disclaimer</a></li>
-          <li><a href="cookies.html">Cookie Policy</a></li>
+          <li><a href="privacy.html" data-i18n="ft.privacy">Privacy Policy</a></li>
+          <li><a href="terms.html" data-i18n="ft.terms">Terms &amp; Conditions</a></li>
+          <li><a href="refund.html" data-i18n="ft.refund">Refund Policy</a></li>
+          <li><a href="disclaimer.html" data-i18n="ft.disclaimer">Disclaimer</a></li>
+          <li><a href="cookies.html" data-i18n="ft.cookies">Cookie Policy</a></li>
         </ul>
       </div>
     </div>
     <div class="f-base">
-      <span>© 2026 World Pass. All rights reserved.</span>
+      <span data-i18n="ft.rights">© 2026 World Pass. All rights reserved.</span>
       <div class="f-links"><a href="tel:+971542946213">+971 54 294 6213</a><a class="wa-link" href="#" target="_blank" rel="noopener">WhatsApp</a><a href="https://t.me/worldpassae" target="_blank" rel="noopener">Telegram</a><a href="https://www.instagram.com/world_pass_services" target="_blank" rel="noopener">Instagram</a></div>
     </div>
     <p class="f-legal">World Pass Services FZ-LLC · Licence No. 47036649 · CWEP9498, Compass Building, Al Shohada Road, Al Hamra Industrial Zone-FZ, Ras Al Khaimah, United Arab Emirates</p>
-    <p class="f-disc">World Pass is a private travel consultancy and is not affiliated with any embassy, consulate, or government authority. We do not issue visas or guarantee visa approval.</p>
+    <p class="f-disc" data-i18n="ft.disc">World Pass is a private travel consultancy and is not affiliated with any embassy, consulate, or government authority. We do not issue visas or guarantee visa approval.</p>
   </div>
 </footer>
 
@@ -1023,21 +1033,21 @@ em{font-style:italic;color:#55708C}
   <div class="success-modal">
     <button class="success-close" aria-label="Close">×</button>
     <div class="success-icon"><svg viewBox="-10 -10 120 120" fill="none"><defs><path id="stampArc" d="M50 50 m-38 0 a38 38 0 1 1 76 0 a38 38 0 1 1 -76 0"/></defs><circle cx="50" cy="50" r="49" stroke="#1E3A5F" stroke-width="2"/><circle cx="50" cy="50" r="45.5" stroke="#1E3A5F" stroke-width=".8"/><circle cx="50" cy="50" r="29" stroke="#1E3A5F" stroke-width=".8" stroke-dasharray="1.5 2.5"/><text font-size="7.4" fill="#1E3A5F" font-family="Montserrat"><textPath href="#stampArc" textLength="234" lengthAdjust="spacing">WORLD PASS · REQUEST RECEIVED · </textPath></text><path d="M38 47l8 8 16-17" stroke="#1E3A5F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><text x="50" y="70" text-anchor="middle" font-size="6.2" fill="#1E3A5F" font-family="Montserrat" letter-spacing="1.2">2026</text></svg></div>
-    <h3>Thank You! Your Request Has Been Received.</h3>
-    <p>Our team will contact you using the details you provided.</p>
-    <button class="btn btn-primary success-ok">Got it</button>
+    <h3 data-i18n="su.title">Thank You! Your Request Has Been Received.</h3>
+    <p data-i18n="su.desc">Our team will contact you using the details you provided.</p>
+    <button class="btn btn-primary success-ok" data-i18n="su.btn">Got it</button>
   </div>
 </div>
 
 <div class="sticky-m" id="stickyM">
-  <a href="#finalForm" class="btn btn-primary">Check My Case</a>
+  <a href="#finalForm" class="btn btn-primary" data-i18n="cta.check">Check My Case</a>
 </div>
 <div class="side-m">
   <a class="sq wa wa-link" href="#" aria-label="WhatsApp" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg></a>
   <a class="sq tg" href="https://t.me/worldpassae" aria-label="Telegram" target="_blank" rel="noopener"><svg><use href="#i-tg"/></svg></a>
 </div>
 <div class="float-d" id="floatD">
-  <a href="#finalForm" class="btn btn-primary" id="floatCta"><span>Check My Case</span> <span class="arrow">→</span></a>
+  <a href="#finalForm" class="btn btn-primary" id="floatCta"><span data-i18n="cta.check">Check My Case</span> <span class="arrow">→</span></a>
   <a class="sq wa wa-link" href="#" aria-label="WhatsApp" target="_blank" rel="noopener"><svg><use href="#i-wa"/></svg></a>
   <a class="sq tg" href="https://t.me/worldpassae" aria-label="Telegram" target="_blank" rel="noopener"><svg><use href="#i-tg"/></svg></a>
 </div>
@@ -1045,13 +1055,33 @@ em{font-style:italic;color:#55708C}
 <script>
 document.documentElement.classList.replace('no-js','js');
 (() => {
+  const I18N = {"en": {"nav.dest": "Destinations", "nav.services": "Services", "nav.how": "How It Works", "nav.faq": "FAQ", "nav.contact": "Contact", "cta.check": "Check My Case", "cta.wa": "Contact Us on WhatsApp", "cta.wachat": "Chat on WhatsApp", "cta.tg": "Telegram", "cta.request": "Request a Consultation", "hero.eyebrow": "Schengen · Visa application support · UAE", "hero.eyebrow_s": "Schengen · Visa support", "hero.h1": "<span class=\"line\"><span>Schengen Visa</span></span><span class=\"line\"><span><em>Application Support</em></span></span>", "hero.sub": "Private document-preparation and application-review consultancy in the UAE.", "hero.lead": "We help you understand the requirements, prepare your documents and review your application before you submit it through the official channel.", "hero.note": "Get an initial assessment of your case with our visa consultant.", "hero.legal": "We are an independent private travel consultancy, not affiliated with any embassy or government authority. Visa approval is determined exclusively by the relevant authorities.", "vis.note": "Illustrative graphic — not an official travel document. Visa decisions are made exclusively by the relevant authorities.", "qf.title": "Check your case in two minutes", "qf.reply": "Our consultant replies during working hours", "qf.legal": "By submitting, you agree to the processing of your information for the purpose of responding to your enquiry. <a href=\"privacy.html\">Privacy Policy</a>", "form.name": "Full Name *", "form.phone": "Phone (+ country code) *", "form.alt": "Telegram / WhatsApp (optional)", "form.dest": "Which Schengen country?", "form.dest2": "Schengen country to visit", "form.selcountry": "Select a country", "form.dates": "Travel dates (approx.)", "form.prev": "Had a Schengen visa before?", "form.sel": "Select", "form.yes": "Yes", "form.no": "No", "form.consent": "I have read the <a href=\"privacy.html\" style=\"text-decoration:underline\">Privacy Policy</a> and consent to the processing of my information for the purpose of responding to my enquiry.", "dest.eyebrow": "Popular destinations", "dest.h2": "Where Are You <em>Planning to Travel?</em>", "dest.lead": "Discover personalised Schengen visa application preparation support for your European travel plans.", "dest.note": "The country you apply to is determined by your actual itinerary and the applicable Schengen visa rules — the main destination or the first point of entry — not only by preference. We help you understand which rule applies to your trip.", "c.france": "France", "c.italy": "Italy", "c.spain": "Spain", "c.germany": "Germany", "c.switzerland": "Switzerland", "c.greece": "Greece", "c.netherlands": "Netherlands", "c.austria": "Austria", "c.cap29": "29 countries", "c.other": "Another country?", "cq.france": "Planning a Trip to France?", "cq.italy": "Planning a Trip to Italy?", "cq.spain": "Planning a Trip to Spain?", "cq.germany": "Planning a Trip to Germany?", "cq.switzerland": "Planning a Trip to Switzerland?", "cq.greece": "Planning a Trip to Greece?", "cq.netherlands": "Planning a Trip to the Netherlands?", "cq.austria": "Planning a Trip to Austria?", "cq.other": "Portugal, Belgium, Czech Republic, Poland, Hungary, Croatia, the Nordics and every other Schengen State — we help with all of them.", "sv.eyebrow": "Our services", "sv.h2": "Schengen Visa <em>Application Support</em>", "sv.lead": "We help you prepare a clear, complete and well-organised application package before submission.", "sv.tag": "Before you submit", "sv1t": "Case Assessment", "sv1d": "We review your nationality, UAE residence status, travel itinerary and previous visa history to understand your situation.", "sv2t": "Document Preparation", "sv2d": "Receive guidance on preparing the supporting documents relevant to your destination and circumstances.", "sv3t": "Application Form Assistance", "sv3d": "We help you complete and review your Schengen visa application form.", "sv4t": "Document Review", "sv4d": "Our consultants go through your documents with you and point out missing information or inconsistencies.", "sv5t": "Appointment <span class=\"amp\">&amp;</span> Submission Guidance", "sv5d": "We explain how the official appointment and submission process works and what steps you may need to take.", "sv6t": "Final Application Check", "sv6d": "We review your prepared application package before submission through the appropriate official channel.", "sp.eyebrow": "One package, reviewed", "sp.h3": "A well-organised file is easier to submit", "sp.p": "Missing pages, inconsistent dates or unclear itineraries often mean extra work at the visa centre. We help you organise your documents before you submit.", "cl.title": "Your checklist", "cl.reviewed": "Reviewed", "cl.passport": "Passport", "cl.passport_s": "validity", "cl.form": "Application form", "cl.form_s": "complete", "cl.itin": "Itinerary <span class=\"amp\">&amp;</span> bookings", "cl.itin_s": "dates match", "cl.ins": "Travel insurance", "cl.ins_s": "coverage", "wh.eyebrow": "Who we work with", "wh.h2": "Who We <em>Work With</em>", "wh.lead": "Whether you are preparing your first Schengen visa application or planning another European trip, we can help you understand the process.", "wh1t": "First-Time Applicants", "wh1d": "Applying for your first Schengen visa? We can guide you through the preparation process.", "wh2t": "UAE Residents", "wh2d": "Get document preparation guidance based on your nationality, residence status and travel plans.", "wh3t": "Families <span class=\"amp\">&amp;</span> Couples", "wh3d": "We help families and couples organise application documents for their planned trip.", "wh4t": "Travellers with Previous Refusals", "wh4d": "Had a visa refusal before? We can review your circumstances and help you prepare a new application.", "wh5t": "Busy Professionals", "wh5d": "Get structured support with forms, document checklists and application preparation.", "wh.cta": "We look at your situation <em>before</em> you commit to any paid service", "hw.eyebrow": "How it works", "hw.h2": "Your Schengen Visa Preparation <em>in 4 Simple Steps</em>", "hw.lead": "From your first consultation to preparing your application for submission.", "hw1t": "Tell Us About Your Trip", "hw1d": "Share your destination, approximate travel dates, nationality and residence status.", "hw2t": "Get Your Case Assessment", "hw2d": "Our consultant reviews your situation and explains the applicable requirements and preparation steps.", "hw3t": "Prepare Your Documents", "hw3d": "We help you prepare your application form and supporting documents based on your circumstances.", "hw4t": "Submit Through Official Channels", "hw4d": "You submit your application through the appropriate embassy, consulate or authorised visa application centre.", "tr.eyebrow": "Why clients choose us", "tr.h2": "Guidance You <em>Can Rely On</em>", "tr.lead": "We focus on helping you understand the requirements and prepare your application with clarity.", "tr1t": "Personalised Approach", "tr1d": "Guidance based on your individual circumstances and travel plans.", "tr2t": "Document-Focused Support", "tr2d": "Careful review of your documents before submission.", "tr3t": "Transparent Service Terms", "tr3d": "Our consulting services and applicable fees are explained before you proceed.", "tr4t": "One Point of Contact", "tr4d": "Your consultant stays in touch throughout preparation — on WhatsApp or Telegram.", "tr.card": "Questions along the way?", "tr.card_s": "Your consultant stays available throughout preparation", "fq.h2": "Frequently Asked Questions", "fq1q": "Do you issue Schengen visas?", "fq1a": "No. We are a private consultancy providing visa application preparation and guidance services. Schengen visas are issued exclusively by the responsible government authorities.", "fq2q": "Can you guarantee visa approval?", "fq2a": "No. Approval decisions are made exclusively by the relevant authorities. No private consultant can guarantee visa approval.", "fq3q": "Can I apply without using your services?", "fq3a": "Yes. You can prepare and submit your Schengen visa application independently through the appropriate official channels.", "fq4q": "Which Schengen country should I apply to?", "fq4a": "The appropriate country depends on your actual itinerary and applicable Schengen visa rules. We can help you understand the relevant requirements.", "fq5q": "How long does the visa process take?", "fq5a": "Processing times and appointment availability vary depending on the destination, season and individual circumstances. We cannot guarantee specific timelines.", "fq6q": "Are government visa fees included?", "fq6a": "Government, consular and authorised visa application centre fees are separate unless expressly included in your service agreement.", "fq7q": "Can you help with an appointment?", "fq7a": "We can explain the official appointment booking process. Availability is controlled by the relevant official authorities and authorised service providers.", "pn.eyebrow": "Start here", "pn.h2": "Your European Journey Starts <em>with Good Preparation</em>", "pn.p": "Tell us about your travel plans. Our consultant will help you understand the next steps in preparing your Schengen visa application.", "lf.eyebrow": "Consultation request", "lf.h2": "Let's Discuss <em>Your Travel Plans</em>", "lf.lead": "Answer a few quick questions and our consultant will contact you to discuss your application preparation needs.", "lf.exp": "Your visa consultant", "lf.exp_s": "Reviews your case, prepares your checklist and checks your package before submission. On WhatsApp and Telegram.", "lf.legal": "* Required fields. We are an independent private travel consultancy, not affiliated with any embassy or government authority. We do not issue visas or guarantee visa approval.", "ii.h2": "Important Information About Our Services", "ii1": "World Pass is an independent private travel company providing Schengen visa application consulting, document preparation and guidance services.", "ii2": "We are not affiliated with any embassy, consulate, government agency or authorised visa application centre.", "ii3": "We do not issue visas, make immigration decisions or guarantee visa approval, appointment availability or processing timelines.", "ii4": "Applicants may prepare and submit their visa applications independently without using our paid services.", "ii5": "All final visa decisions are made exclusively by the relevant government authorities.", "ii6": "Government and consular fees are separate from our consulting fees unless otherwise specified.", "ii.link": "Official Schengen Visa Information →", "ct.eyebrow": "Contact", "ct.h2": "Contact <em>Our Team</em>", "ct.lead": "Have questions about preparing your Schengen visa application? Contact our team to discuss your travel plans and the support you may need.", "ct.company": "Company", "ct.location": "Location", "ct.location_v": "Dubai, United Arab Emirates", "ct.phone": "Phone", "ct.email": "Email", "ct.email_v": "will be added", "ct.hours": "Working hours", "ct.hours_v": "Mon–Sat, 10:00–19:00 (GST)", "ft.about": "Private Schengen visa application consulting and document preparation support for travellers based in the UAE.", "ft.nav": "Navigation", "ft.contact": "Contact Us", "ft.legalh": "Legal", "ft.privacy": "Privacy Policy", "ft.terms": "Terms & Conditions", "ft.refund": "Refund Policy", "ft.disclaimer": "Disclaimer", "ft.cookies": "Cookie Policy", "ft.rights": "© 2026 World Pass. All rights reserved.", "ft.disc": "World Pass is a private travel consultancy and is not affiliated with any embassy, consulate, or government authority. We do not issue visas or guarantee visa approval.", "su.title": "Thank You! Your Request Has Been Received.", "su.desc": "Our team will contact you using the details you provided.", "su.btn": "Got it", "meta.title": "Schengen Visa Application Support for UAE Residents — World Pass", "wa.text": "Hello! I'm planning a trip to Europe and would like an initial assessment of my Schengen visa case.", "ticker": ["Case assessment", "Document checklist", "Application form", "Document review", "Submission guidance", "Families and couples", "Previous refusals", "Applying from the UAE"]}, "ru": {"nav.dest": "Направления", "nav.services": "Услуги", "nav.how": "Как мы работаем", "nav.faq": "Вопросы", "nav.contact": "Контакты", "cta.check": "Получить консультацию", "cta.wa": "Написать в WhatsApp", "cta.wachat": "Написать в WhatsApp", "cta.tg": "Telegram", "cta.request": "Отправить заявку", "hero.eyebrow": "Шенген · Помощь с документами · ОАЭ", "hero.eyebrow_s": "Шенген · Документы", "hero.h1": "<span class=\"line\"><span>Подготовка документов</span></span><span class=\"line\"><span><em>на шенгенскую визу</em></span></span>", "hero.sub": "Частная консультационная служба в ОАЭ по подготовке документов на шенгенскую визу.", "hero.lead": "Поможем разобраться в требованиях, подготовить документы, заполнить анкету и проверить заявление перед подачей через официальный канал.", "hero.note": "Расскажите о поездке — специалист изучит вашу ситуацию и объяснит, с чего начать.", "hero.legal": "Мы — частная консультационная компания. Не являемся посольством, консульством или официальным визовым центром. Решение о выдаче визы принимают исключительно уполномоченные государственные органы.", "vis.note": "Иллюстрация, не является официальным документом. Решение о визе принимают исключительно уполномоченные органы.", "qf.title": "Расскажите о вашей поездке", "qf.reply": "Специалист ответит в рабочее время", "qf.legal": "Отправляя форму, вы соглашаетесь на обработку данных для ответа на обращение. <a href=\"privacy.html\">Политика конфиденциальности</a>", "form.name": "Имя *", "form.phone": "Телефон (с кодом страны) *", "form.alt": "Telegram / WhatsApp (необязательно)", "form.dest": "В какую страну Шенгена?", "form.dest2": "Страна Шенгена для поездки", "form.selcountry": "Выберите страну", "form.dates": "Примерные даты поездки", "form.prev": "Был ли Шенген ранее?", "form.sel": "Выберите", "form.yes": "Да", "form.no": "Нет", "form.consent": "Я ознакомлен(-а) с <a href=\"privacy.html\" style=\"text-decoration:underline\">Политикой конфиденциальности</a> и согласен(-на) на обработку моих данных для ответа на обращение.", "dest.eyebrow": "Популярные направления", "dest.h2": "Куда вы <em>планируете поехать?</em>", "dest.lead": "Поможем разобраться в требованиях к шенгенской визе с учётом вашего маршрута.", "dest.note": "Страна, в которую подаётся заявление, определяется вашим маршрутом и действующими визовыми правилами — страной основного назначения или первого въезда, а не только вашим желанием. Поможем понять, какое правило применимо к вашей поездке.", "c.france": "Франция", "c.italy": "Италия", "c.spain": "Испания", "c.germany": "Германия", "c.switzerland": "Швейцария", "c.greece": "Греция", "c.netherlands": "Нидерланды", "c.austria": "Австрия", "c.cap29": "29 стран", "c.other": "Другая страна?", "cq.france": "Планируете поездку во Францию?", "cq.italy": "Планируете поездку в Италию?", "cq.spain": "Планируете поездку в Испанию?", "cq.germany": "Планируете поездку в Германию?", "cq.switzerland": "Планируете поездку в Швейцарию?", "cq.greece": "Планируете поездку в Грецию?", "cq.netherlands": "Планируете поездку в Нидерланды?", "cq.austria": "Планируете поездку в Австрию?", "cq.other": "Португалия, Бельгия, Чехия, Польша, Венгрия, Хорватия, страны Северной Европы и все остальные государства Шенгена — помогаем со всеми.", "sv.eyebrow": "Наши услуги", "sv.h2": "Помощь с документами <em>на шенгенскую визу</em>", "sv.lead": "Поможем подготовить понятный, полный и аккуратно оформленный комплект документов перед подачей.", "sv.tag": "Перед подачей", "sv1t": "Консультация и разбор ситуации", "sv1d": "Изучим гражданство, статус проживания в ОАЭ, маршрут и историю предыдущих виз, чтобы понять вашу ситуацию.", "sv2t": "Подготовка документов", "sv2d": "Составим персональный список документов и объясним, как их подготовить с учётом вашей поездки.", "sv3t": "Помощь с анкетой", "sv3d": "Поможем заполнить визовую анкету и проверить правильность указанных данных.", "sv4t": "Проверка документов", "sv4d": "Проверим комплект, обратим внимание на недостающую информацию и возможные несоответствия.", "sv5t": "Консультация по записи <span class=\"amp\">&amp;</span> подаче", "sv5d": "Расскажем, как устроена запись на подачу, куда обращаться и какие этапы необходимо пройти.", "sv6t": "Финальная проверка", "sv6d": "Перед подачей ещё раз проверим комплект документов через соответствующий официальный канал.", "sp.eyebrow": "Один комплект, проверенный", "sp.h3": "Аккуратно собранный комплект проще подать", "sp.p": "Недостающие страницы, несовпадающие даты или неясный маршрут часто означают доработку в визовом центре. Поможем всё организовать до подачи.", "cl.title": "Ваш чек-лист", "cl.reviewed": "Проверено", "cl.passport": "Паспорт", "cl.passport_s": "срок действия", "cl.form": "Анкета", "cl.form_s": "заполнена", "cl.itin": "Маршрут <span class=\"amp\">&amp;</span> брони", "cl.itin_s": "даты совпадают", "cl.ins": "Страховка", "cl.ins_s": "покрытие", "wh.eyebrow": "Кому мы помогаем", "wh.h2": "В каких <em>ситуациях к нам обращаются</em>", "wh.lead": "Готовите первую заявку на Шенген или планируете очередную поездку в Европу — поможем разобраться в процессе.", "wh1t": "Подаёте впервые", "wh1d": "Не знаете, с чего начать и какие документы собирать? Поможем разобраться шаг за шагом.", "wh2t": "Резиденты ОАЭ", "wh2d": "Поможем с учётом вашего гражданства, статуса проживания и планов поездки.", "wh3t": "Семьи <span class=\"amp\">&amp;</span> пары", "wh3d": "Поможем подготовить документы для всех участников поездки, включая детей.", "wh4t": "Был отказ ранее", "wh4d": "Поможем изучить причины предыдущего отказа и учесть их при подготовке нового заявления.", "wh5t": "Занятые профессионалы", "wh5d": "Структурированная помощь с анкетой, списком документов и подготовкой заявления.", "wh.cta": "Разберём вашу ситуацию <em>до того</em>, как вы что-то оплатите", "hw.eyebrow": "Как мы работаем", "hw.h2": "Подготовка к подаче <em>в 4 простых шага</em>", "hw.lead": "От первой консультации до подготовки заявления к подаче.", "hw1t": "Расскажите о поездке", "hw1d": "Укажите направление, примерные даты поездки, гражданство и статус проживания.", "hw2t": "Получите консультацию", "hw2d": "Специалист изучит ситуацию, расскажет о требованиях и шагах подготовки.", "hw3t": "Подготовьте документы", "hw3d": "Поможем с анкетой и документами с учётом ваших обстоятельств.", "hw4t": "Подайте заявление", "hw4d": "Вы подаёте документы через соответствующее консульство или уполномоченный визовый центр.", "tr.eyebrow": "Почему к нам обращаются", "tr.h2": "Поддержка, на которую <em>можно положиться</em>", "tr.lead": "Помогаем разобраться в требованиях и подготовить заявление понятно и спокойно.", "tr1t": "Индивидуальный подход", "tr1d": "Учитываем обстоятельства вашей поездки, а не предлагаем один список для всех.", "tr2t": "Фокус на документах", "tr2d": "Внимательно проверяем документы до подачи.", "tr3t": "Прозрачные условия", "tr3d": "Состав услуг и стоимость объясняем заранее, до начала работы.", "tr4t": "Один специалист на связи", "tr4d": "Ваш консультант на связи на протяжении подготовки — в WhatsApp или Telegram.", "tr.card": "Остались вопросы по ходу?", "tr.card_s": "Специалист на связи на всех этапах подготовки", "fq.h2": "Часто задаваемые вопросы", "fq1q": "Вы оформляете и выдаёте шенгенские визы?", "fq1a": "Нет. Мы оказываем консультационные услуги и помогаем подготовить документы для подачи. Визы выдают только уполномоченные государственные органы.", "fq2q": "Можете ли вы гарантировать визу?", "fq2a": "Нет. Решение по каждому заявлению принимают соответствующие государственные органы. Ни один частный консультант не может гарантировать выдачу визы.", "fq3q": "Можно ли подать самостоятельно без вас?", "fq3a": "Да. Вы можете самостоятельно подготовить и подать заявление через официальные каналы. Наши услуги — для тех, кому нужна помощь с подготовкой.", "fq4q": "В какую страну Шенгена подавать?", "fq4a": "Это зависит от вашего маршрута и действующих визовых правил. Обычно заявление подают в страну основного назначения. Поможем разобраться в требованиях.", "fq5q": "Сколько занимает оформление?", "fq5a": "Сроки и наличие записи зависят от страны, сезона и обстоятельств заявителя. Мы не гарантируем конкретные сроки.", "fq6q": "Входят ли визовые сборы в стоимость?", "fq6a": "Государственные, консульские сборы и сборы визовых центров оплачиваются отдельно, если иное не указано в договоре.", "fq7q": "Помогаете ли вы с записью?", "fq7a": "Мы консультируем по процедуре записи и официальным каналам. Наличие свободных дат зависит от визового центра или консульства.", "pn.eyebrow": "С чего начать", "pn.h2": "Поездка в Европу начинается <em>с хорошей подготовки</em>", "pn.p": "Расскажите о вашей поездке. Специалист поможет понять дальнейшие шаги по подготовке документов на шенгенскую визу.", "lf.eyebrow": "Заявка на консультацию", "lf.h2": "Расскажите <em>о вашей поездке</em>", "lf.lead": "Заполните короткую форму — специалист свяжется с вами, уточнит детали и расскажет, чем мы можем помочь.", "lf.exp": "Ваш визовый специалист", "lf.exp_s": "Разберёт вашу ситуацию, составит чек-лист и проверит комплект перед подачей. В WhatsApp и Telegram.", "lf.legal": "* Обязательные поля. Мы — частная консультационная компания, не связанная с посольствами, консульствами или госорганами. Мы не выдаём визы и не гарантируем результат.", "ii.h2": "Информация о наших услугах", "ii1": "World Pass — независимая частная компания, оказывающая консультационные услуги по подготовке заявлений и документов для шенгенской визы.", "ii2": "Мы не являемся посольством, консульством, государственным органом или официальным визовым центром и не представляем их интересы.", "ii3": "Мы не выдаём визы и не гарантируем их одобрение, наличие свободных дат или сроки рассмотрения заявления.", "ii4": "Вы можете самостоятельно подготовить и подать заявление через официальные каналы без использования наших платных услуг.", "ii5": "Окончательное решение о выдаче визы принимают исключительно компетентные государственные органы.", "ii6": "Государственные и консульские сборы оплачиваются отдельно от стоимости наших услуг, если не указано иное.", "ii.link": "Официальная информация о шенгенских визах →", "ct.eyebrow": "Контакты", "ct.h2": "Свяжитесь <em>с нами</em>", "ct.lead": "Планируете поездку в Европу и хотите обсудить подготовку документов? Напишите нам — поможем разобраться, с чего начать.", "ct.company": "Компания", "ct.location": "Адрес", "ct.location_v": "Дубай, ОАЭ", "ct.phone": "Телефон", "ct.email": "Email", "ct.email_v": "будет добавлен", "ct.hours": "Часы работы", "ct.hours_v": "Пн–Сб, 10:00–19:00 (GST)", "ft.about": "Консультации и помощь в подготовке документов на туристические шенгенские визы для жителей ОАЭ.", "ft.nav": "Навигация", "ft.contact": "Контакты", "ft.legalh": "Документы", "ft.privacy": "Политика конфиденциальности", "ft.terms": "Условия оказания услуг", "ft.refund": "Политика возврата", "ft.disclaimer": "Правовая информация", "ft.cookies": "Политика cookie", "ft.rights": "© 2026 World Pass. Все права защищены.", "ft.disc": "World Pass — частная консультационная компания, не связанная с посольствами, консульствами или государственными органами. Мы не выдаём визы и не гарантируем результат рассмотрения заявления.", "su.title": "Спасибо! Ваша заявка получена.", "su.desc": "Наш специалист свяжется с вами по указанным контактам.", "su.btn": "Понятно", "meta.title": "Подготовка документов на шенгенскую визу для жителей ОАЭ — World Pass", "wa.text": "Здравствуйте! Планирую поездку в Европу и хочу получить первичную оценку моего визового кейса.", "ticker": ["Разбор ситуации", "Чек-лист документов", "Анкета", "Проверка документов", "Помощь с подачей", "Семьи и пары", "После отказа", "Подача из ОАЭ"]}};
   const WA_PHONE = '971542946213';
-  const WA_TEXT = "Hello! I'm planning a trip to Europe and would like an initial assessment of my Schengen visa case.";
+  function setLang(lang){
+    const dd = I18N[lang] || I18N.en;
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => { const k = el.dataset.i18n; if (k in dd) el.textContent = dd[k]; });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => { const k = el.dataset.i18nHtml; if (k in dd) el.innerHTML = dd[k]; });
+    document.title = dd['meta.title'];
+    const ll = document.getElementById('langLabel'); if (ll) ll.textContent = lang.toUpperCase();
+    const ls = document.getElementById('langSel'); if (ls) ls.value = lang;
+    const tk = document.getElementById('ticker'); if (tk) tk.innerHTML = [...dd.ticker, ...dd.ticker].map(t => `<span>${t}</span>`).join('');
+    document.querySelectorAll('.wa-link').forEach(a => a.href = 'https://wa.me/' + WA_PHONE + '?text=' + encodeURIComponent(dd['wa.text']));
+    try { localStorage.setItem('wp_lang', lang); } catch(e){}
+  }
   const COUNTRIES = ['France','Italy','Spain','Germany','Switzerland','Greece','Netherlands','Austria','Portugal','Belgium','Czech Republic','Poland','Hungary','Croatia','Denmark','Sweden','Norway','Finland','Other Schengen country','Not sure yet'];
 
-  document.querySelectorAll('.wa-link').forEach(a => a.href = `https://wa.me/${WA_PHONE}?text=${encodeURIComponent(WA_TEXT)}`);
   document.querySelectorAll('.dest-select').forEach(s => s.insertAdjacentHTML('beforeend', COUNTRIES.map(c => `<option>${c}</option>`).join('')));
   document.querySelectorAll('.mmenu a').forEach(a => a.addEventListener('click', () => { document.getElementById('menuToggle').checked = false; }));
+
+  (() => {
+    const browserRu = (navigator.languages || [navigator.language || '']).some(l => /^ru\b/i.test(l));
+    let lang = browserRu ? 'ru' : 'en';
+    try { lang = new URLSearchParams(location.search).get('lang') || localStorage.getItem('wp_lang') || lang; } catch(e){}
+    if (lang !== 'ru' && lang !== 'en') lang = 'en';
+    setLang(lang);
+    const ls = document.getElementById('langSel'); if (ls) ls.addEventListener('change', e => setLang(e.target.value));
+  })();
 
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const header = document.getElementById('header');
@@ -1143,6 +1173,8 @@ document.documentElement.classList.replace('no-js','js');
     fd.append('prev', f.prev ? f.prev.value : '');
     fd.append('service', 'Schengen Visa');
     fd.append('form', f.dataset.formName);
+    fd.append('alt', f.alt ? f.alt.value.trim() : '');
+    fd.append('lang', document.documentElement.lang.toUpperCase());
     fd.append('website', f.website.value);
     fd.append('url', location.href);
     UTM.forEach(t => fd.append(t, getC(t) || ''));

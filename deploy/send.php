@@ -24,6 +24,8 @@ $phone       = preg_replace('/[^\d+ ]/', '', $f('phone'));
 $destination = $f('destination');
 $dates       = $f('dates');
 $prev        = $f('prev');
+$alt         = $f('alt');
+$lang        = $f('lang');
 $service     = $f('service') ?: 'Schengen Visa';
 $form_name   = $f('form') ?: 'Schengen — Consultation Request';
 $url         = $f('url');
@@ -42,10 +44,12 @@ $lines = [
   "Форма: $form_name",
   "Имя: $name",
   "Телефон: $phone",
+  "Доп. связь: " . ($alt ?: '—'),
   "Страна поездки: " . ($destination ?: '—'),
   "Даты поездки: " . ($dates ?: '—'),
   "Был ли Шенген ранее: " . ($prev ?: '—'),
   "Страница: $url",
+  "Язык формы: " . ($lang ?: '—'),
   $utm ? 'UTM: ' . http_build_query($utm, '', ', ') : 'UTM: —',
   "Время: $when (сервер), IP: $ip",
 ];
@@ -138,6 +142,7 @@ tg_send($TG,
   "🇪🇺 <b>Schengen — новая заявка</b>\n" .
   "<b>Имя:</b> " . $h($name) . "\n" .
   "<b>Телефон:</b> " . $h($phone) . "\n" .
+  ($alt !== '' ? "<b>Доп. связь:</b> " . $h($alt) . "\n" : '') .
   ($destination !== '' ? "<b>Страна поездки:</b> " . $h($destination) . "\n" : '') .
   ($dates !== '' ? "<b>Даты:</b> " . $h($dates) . "\n" : '') .
   ($prev !== '' ? "<b>Был Шенген:</b> " . $h($prev) . "\n" : '') .
