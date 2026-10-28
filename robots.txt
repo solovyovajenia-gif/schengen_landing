@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://solovyovajenia-gif.github.io/schengen_landing/sitemap.xml
