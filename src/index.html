@@ -224,6 +224,8 @@ em{font-style:italic;color:#55708C}
 .field label{position:absolute;left:17px;top:18px;font-size:14px;color:var(--muted);pointer-events:none;transition:all .25s var(--ease);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:calc(100% - 34px)}
 .field input:focus,.field select:focus{border-color:var(--navy);background:#fff;box-shadow:0 0 0 4px rgba(30,58,95,.08)}
 .field input:focus+label,.field input:not(:placeholder-shown)+label,.field select+label{top:7px;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.field.phonef label{top:7px;font-size:10px;letter-spacing:.12em;text-transform:uppercase}
+.field.phonef input::placeholder{color:var(--muted);opacity:.65}
 .legal{font-size:11px;color:var(--muted);line-height:1.6}
 .legal a{text-decoration:underline}
 .form-card .legal{margin:0}
@@ -769,7 +771,7 @@ html[lang="ru"] .btn-wa,html[lang="ru"] .btn-tg{padding:0 22px}
     <header><h3 data-i18n="qf.title">Check your case in two minutes</h3><p data-i18n="qf.reply">Our consultant replies during working hours</p></header>
     <div class="fields dock">
       <div class="field"><input name="fname" placeholder=" " required autocomplete="name"><label data-i18n="form.name">Full Name *</label></div>
-      <div class="field"><input name="phone" type="tel" placeholder=" " required autocomplete="tel" inputmode="tel" class="phone"><label data-i18n="form.phone">Phone *</label></div>
+      <div class="field phonef"><input name="phone" type="tel" placeholder="+971 50 123 4567" required autocomplete="tel" inputmode="tel" class="phone"><label data-i18n="form.phone">Phone *</label></div>
       <div class="field"><input name="alt" placeholder=" " autocomplete="off"><label data-i18n="form.alt">Telegram nickname/WhatsApp/Email</label></div>
       <div class="field select"><select name="destination" class="dest-select"><option value="" selected data-i18n="form.selcountry">Select</option></select><label data-i18n="form.dest">Country of travel</label></div>
       <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off">
@@ -961,7 +963,7 @@ html[lang="ru"] .btn-wa,html[lang="ru"] .btn-tg{padding:0 22px}
       <form class="form-card lead-form" id="finalForm" data-form-name="Schengen — Consultation Request" novalidate>
         <div class="fields">
           <div class="field"><input name="fname" placeholder=" " required autocomplete="name"><label data-i18n="form.name">Full Name *</label></div>
-          <div class="field"><input name="phone" type="tel" placeholder=" " required inputmode="tel" class="phone"><label data-i18n="form.phone">Phone *</label></div>
+          <div class="field phonef"><input name="phone" type="tel" placeholder="+971 50 123 4567" required inputmode="tel" class="phone"><label data-i18n="form.phone">Phone *</label></div>
           <div class="field full"><input name="alt" placeholder=" " autocomplete="off"><label data-i18n="form.alt">Telegram nickname/WhatsApp/Email</label></div>
           <div class="field select"><select name="destination" class="dest-select"><option value="" selected data-i18n="form.selcountry">Select</option></select><label data-i18n="form.dest2">Country of travel</label></div>
           <div class="field"><input name="dates" placeholder=" " autocomplete="off"><label data-i18n="form.dates">Travel dates</label></div>
@@ -1182,13 +1184,20 @@ document.documentElement.classList.replace('no-js','js');
   const getC = n => { const m = document.cookie.match(new RegExp('(?:^|; )' + n + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : ''; };
   UTM.forEach(t => setC(t, q(t)));
 
+  // phone mask (как worldpass.ae/visa-usa): + и цифры группами по 3, максимум 15
+  document.querySelectorAll('input.phone').forEach(i => {
+    i.addEventListener('focus', () => { if (!i.value) i.value = '+'; });
+    i.addEventListener('input', () => { const d=i.value.replace(/\D/g,'').slice(0,15); i.value = d ? '+'+d.replace(/(\d{3})(?=\d)/g,'$1 ').trim() : '+'; });
+    i.addEventListener('blur', () => { if (i.value === '+') i.value = ''; });
+  });
   document.querySelectorAll('.lead-form').forEach(f => f.addEventListener('submit', e => {
     e.preventDefault();
     let ok = true;
     f.querySelectorAll('[required]').forEach(i => {
       let bad;
       if (i.type === 'checkbox') bad = !i.checked;
-      else bad = !i.value.trim() || (i.classList.contains('phone') && i.value.replace(/\D/g, '').length < 7);
+      else if (i.classList.contains('phone')) { const d=i.value.replace(/\D/g,''); bad = !i.value.trim() || !/^\s*\+/.test(i.value) || d.length<8 || d.length>15 || d[0]==='0'; }
+      else bad = !i.value.trim();
       if (i.type === 'checkbox') i.parentElement.style.color = bad ? '#C0504D' : '';
       else i.style.borderColor = bad ? '#C0504D' : '';
       ok = ok && !bad;

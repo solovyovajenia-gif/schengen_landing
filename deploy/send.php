@@ -33,7 +33,7 @@ $utm = [];
 foreach (['utm_source','utm_campaign','utm_medium','utm_term','utm_content'] as $u) if ($f($u) !== '') $utm[$u] = $f($u);
 
 // защита от ботов: пустое имя/телефон или honeypot
-if ($name === '' || strlen(preg_replace('/\D/', '', $phone)) < 7 || !empty($_POST['website'])) {
+if ($name === '' || strlen(preg_replace('/\D/', '', $phone)) < 8 || !empty($_POST['website'])) {
   http_response_code(400); echo '{"ok":false,"error":"invalid"}'; exit;
 }
 
