@@ -9,32 +9,6 @@
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 
-// TEMP diagnostic: inspect Kommo sources/pipelines (remove after use)
-if (($_GET['diag'] ?? '') === 'wp9f3x') {
-  header('Content-Type: text/plain; charset=utf-8');
-  $c = include __DIR__ . '/config.php'; $k = $c['kommo'] ?? [];
-  $get = function(string $path) use ($k) {
-    $ch = curl_init("https://{$k['subdomain']}.kommo.com/api/v4/$path");
-    curl_setopt_array($ch, [CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . ($k['token'] ?? '')], CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 10]);
-    return [curl_exec($ch), curl_getinfo($ch, CURLINFO_HTTP_CODE)];
-  };
-  [$s, $sc] = $get('sources');
-  echo "=== SOURCES (HTTP $sc) ===\n";
-  $sd = json_decode((string)$s, true);
-  foreach (($sd['_embedded']['sources'] ?? []) as $x) echo ($x['id'] ?? '?') . ' | name=' . ($x['name'] ?? '') . ' | ext=' . ($x['external_id'] ?? '') . ' | pipeline=' . ($x['pipeline_id'] ?? '') . ' | default=' . var_export($x['default'] ?? null, true) . "\n";
-  [$p, $pc] = $get('leads/pipelines');
-  echo "\n=== PIPELINES (HTTP $pc) ===\n";
-  $pd = json_decode((string)$p, true);
-  foreach (($pd['_embedded']['pipelines'] ?? []) as $x) echo ($x['id'] ?? '?') . ' | ' . ($x['name'] ?? '') . (($x['is_main'] ?? false) ? ' (main)' : '') . "\n";
-  if (($_GET['create'] ?? '') === '1') {
-    $ch = curl_init("https://{$k['subdomain']}.kommo.com/api/v4/sources");
-    curl_setopt_array($ch, [CURLOPT_CUSTOMREQUEST => 'POST', CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'Authorization: Bearer ' . ($k['token'] ?? '')], CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 10, CURLOPT_POSTFIELDS => json_encode([['name' => 'Schengen website', 'external_id' => 'schengen_gotoeurope', 'pipeline_id' => 14364439]], JSON_UNESCAPED_UNICODE)]);
-    $cr = curl_exec($ch); $cc = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    echo "\n=== CREATE SOURCE (HTTP $cc) ===\n$cr\n";
-  }
-  exit;
-}
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); echo '{"ok":false}'; exit; }
 
 $cfg = file_exists(__DIR__ . '/config.php') ? include __DIR__ . '/config.php' : [];
