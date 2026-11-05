@@ -36,6 +36,22 @@ if ($name === '' || strlen(preg_replace('/\D/', '', $phone)) < 8 || !empty($_POS
   http_response_code(400); echo '{"ok":false,"error":"invalid"}'; exit;
 }
 
+// Распознаём «Telegram ник / WhatsApp / Email» из поля alt:
+// подпись как называется поле, значение в правильное поле контакта. Telegram — с @.
+$alt_label = ''; $alt_value = $alt; $alt_cf = null;
+if ($alt !== '') {
+  if (preg_match('/[^@\s,;]+@[^@\s,;]+\.[a-z]{2,}/i', $alt, $em)) {
+    $alt_label = 'Email'; $alt_value = $em[0];
+    $alt_cf = ['field_code' => 'EMAIL', 'values' => [['value' => $em[0], 'enum_code' => 'PRIV']]];
+  } elseif (preg_match('/^\+?[\d][\d\s()\-]{6,}$/', $alt)) {
+    $alt_label = 'WhatsApp'; $alt_value = preg_replace('/\s+/', '', $alt);
+    $alt_cf = ['field_id' => 537660, 'values' => [['value' => $alt_value, 'enum_code' => 'WHATSAPP']]];
+  } else {
+    $alt_label = 'Telegram'; $alt_value = '@' . ltrim(trim($alt), '@');
+    $alt_cf = ['field_id' => 538334, 'values' => [['value' => $alt_value]]];
+  }
+}
+
 $when = date('Y-m-d H:i:s');
 $ip   = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '';
 $lines = [
@@ -43,7 +59,7 @@ $lines = [
   "Форма: $form_name",
   "Имя: $name",
   "Телефон: $phone",
-  "Доп. связь: " . ($alt ?: '—'),
+  ($alt !== '' ? "$alt_label: $alt_value" : "Связь: —"),
   "Страна поездки: " . ($destination ?: '—'),
   "Даты поездки: " . ($dates ?: '—'),
   "Страница: " . ($url ?: '—'),
@@ -142,11 +158,7 @@ if ($KOMMO && !empty($KOMMO['token']) && !empty($KOMMO['subdomain'])) {
       $contact_id = $ld['_embedded']['contacts'][0]['id'] ?? null;
       if ($contact_id) {
         $ccf = [];
-        if (preg_match('/[^@\s,;]+@[^@\s,;]+\.[a-z]{2,}/i', $alt, $em)) {
-          $ccf[] = ['field_code' => 'EMAIL', 'values' => [['value' => $em[0], 'enum_code' => 'PRIV']]];
-        } elseif ($alt !== '') {
-          $ccf[] = ['field_id' => 538334, 'values' => [['value' => ltrim($alt, "@ \t")]]]; // Telegram username (Radist.online)
-        }
+        if ($alt_cf) $ccf[] = $alt_cf; // Email / Telegram (с @) / WhatsApp — в своё поле
         if ($lang) { $lc = strtoupper($lang) === 'RU' ? 353778 : (strtoupper($lang) === 'EN' ? 353780 : 0); if ($lc) $ccf[] = ['field_id' => 433148, 'values' => [['enum_id' => $lc]]]; }
         if ($ccf) { [$cc] = kommo_call($KOMMO, 'PATCH', "contacts/$contact_id", ['custom_fields_values' => $ccf]); $fields_ok = $fields_ok && ($cc >= 200 && $cc < 300); }
       }
@@ -165,7 +177,7 @@ tg_send($TG,
   "🇪🇺 <b>Schengen — новая заявка</b>\n" .
   "<b>Имя:</b> " . $h($name) . "\n" .
   "<b>Телефон:</b> " . $h($phone) . "\n" .
-  ($alt !== '' ? "<b>Доп. связь:</b> " . $h($alt) . "\n" : '') .
+  ($alt !== '' ? "<b>$alt_label:</b> " . $h($alt_value) . "\n" : '') .
   ($destination !== '' ? "<b>Страна поездки:</b> " . $h($destination) . "\n" : '') .
   ($dates !== '' ? "<b>Даты:</b> " . $h($dates) . "\n" : '') .
   "<b>Форма:</b> " . $h($form_name) . "\n" .
