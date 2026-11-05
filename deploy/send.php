@@ -150,6 +150,9 @@ if ($KOMMO && !empty($KOMMO['token']) && !empty($KOMMO['subdomain'])) {
       ];
       $CMAP = ['France'=>444958,'Germany'=>444960,'Italy'=>444962,'Netherlands'=>444964,'Austria'=>444966,'Switzerland'=>444970,'Greece'=>444974,'Spain'=>444942];
       if (isset($CMAP[$destination])) $cfv[] = ['field_id' => 534326, 'values' => [['enum_id' => $CMAP[$destination]]]]; // Country/Program
+      // UTM -> lead tracking_data fields (so utm-based automations/reports work on our leads too)
+      $UTMF = ['utm_source'=>325784, 'utm_campaign'=>325782, 'utm_medium'=>325780, 'utm_term'=>325786, 'utm_content'=>325778];
+      foreach ($UTMF as $uk => $ufid) if (!empty($utm[$uk])) $cfv[] = ['field_id' => $ufid, 'values' => [['value' => $utm[$uk]]]];
       [$fc] = kommo_call($KOMMO, 'PATCH', "leads/$lead_id", ['custom_fields_values' => $cfv]);
       $fields_ok = ($fc >= 200 && $fc < 300);
 
