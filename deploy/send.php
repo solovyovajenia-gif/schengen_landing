@@ -94,6 +94,38 @@ function kommo_call(array $k, string $method, string $path, $payload = null) {
   return [$code, json_decode((string)$resp, true), (string)$resp];
 }
 
+/**
+ * Registered Lead Source "gotoeurope.ae — site forms" so leads attribute to it
+ * (appears in Automate → Lead Sources, trigger conditions, Dashboard).
+ * Finds by external_id, creates if missing, caches in .kommo_source.json.
+ * Returns the source array (id, external_id, name) or null if unavailable.
+ */
+function kommo_site_source(array $k): ?array {
+  $ext   = 'gotoeurope.ae';
+  $name  = 'gotoeurope.ae — site forms';
+  $cache = __DIR__ . '/.kommo_source.json';
+  if (is_file($cache)) {
+    $c = json_decode((string)@file_get_contents($cache), true);
+    if (!empty($c['id'])) return $c;
+  }
+  // find existing
+  [$gc, $gd] = kommo_call($k, 'GET', 'sources');
+  if ($gc >= 200 && $gc < 300 && is_array($gd)) {
+    foreach (($gd['_embedded']['sources'] ?? []) as $s) {
+      if (($s['external_id'] ?? '') === $ext) { @file_put_contents($cache, json_encode($s)); return $s; }
+    }
+  }
+  // create
+  $pl = [[ 'name' => $name, 'external_id' => $ext, 'pipeline_id' => (int)($k['pipeline_id'] ?? 0) ?: 14364439 ]];
+  [$cc, $cd, $craw] = kommo_call($k, 'POST', 'sources', $pl);
+  if ($cc >= 200 && $cc < 300) {
+    $s = $cd['_embedded']['sources'][0] ?? null;
+    if (!empty($s['id'])) { @file_put_contents($cache, json_encode($s)); return $s; }
+  }
+  @file_put_contents(__DIR__ . '/leads.log', "SOURCE $cc: " . substr((string)($craw ?? ''), 0, 200) . "\n", FILE_APPEND | LOCK_EX);
+  return null;
+}
+
 /** Уведомление в Telegram (копия каждой заявки + статус Kommo) */
 function tg_send(?array $tg, string $html): void {
   if (!$tg || empty($tg['token']) || empty($tg['chat_id'])) return;
@@ -111,9 +143,12 @@ if ($KOMMO && !empty($KOMMO['token']) && !empty($KOMMO['subdomain'])) {
 
   // «Неразобранное» (Incoming leads): сделка без ответственного, менеджер принимает её сам
   $host = parse_url($SITE, PHP_URL_HOST) ?: 'gotoeurope.ae';
+  // Registered lead source (so it shows as "gotoeurope.ae — site forms" like usatravel)
+  $SRC = kommo_site_source($KOMMO);
+  if ($SRC) $lead['source_id'] = (int)$SRC['id'];
   $payload = [[
-    'source_uid'  => 'gotoeurope_site_forms',          // стабильный → один источник (как usatravel)
-    'source_name' => $host . ' — site forms',           // показывается как «Источник» в автоматизациях
+    'source_uid'  => $SRC['external_id'] ?? 'gotoeurope_site_forms',
+    'source_name' => $SRC['name'] ?? ($host . ' — site forms'),
     'pipeline_id' => (int)($KOMMO['pipeline_id'] ?? 0) ?: null,
     'created_at'  => time(),
     'metadata' => [
@@ -189,4 +224,4 @@ tg_send($TG,
   ($mailed === null ? '' : ($mailed ? "📧 Письмо отправлено\n" : "⚠️ Письмо НЕ отправлено\n")) .
   $kline);
 
-echo json_encode(['ok' => true, 'mail' => $mailed, 'kommo' => $kommo_ok, 'fields' => $fields_ok]);
+echo json_encode(['ok' => true, 'mail' => $mailed, 'kommo' => $kommo_ok, 'fields' => $fields_ok, 'source' => (isset($SRC) && $SRC) ? (int)$SRC['id'] : false]);
