@@ -9,6 +9,26 @@
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 
+// TEMP diagnostic: inspect Kommo sources/pipelines (remove after use)
+if (($_GET['diag'] ?? '') === 'wp9f3x') {
+  header('Content-Type: text/plain; charset=utf-8');
+  $c = include __DIR__ . '/config.php'; $k = $c['kommo'] ?? [];
+  $get = function(string $path) use ($k) {
+    $ch = curl_init("https://{$k['subdomain']}.kommo.com/api/v4/$path");
+    curl_setopt_array($ch, [CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . ($k['token'] ?? '')], CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 10]);
+    return [curl_exec($ch), curl_getinfo($ch, CURLINFO_HTTP_CODE)];
+  };
+  [$s, $sc] = $get('sources');
+  echo "=== SOURCES (HTTP $sc) ===\n";
+  $sd = json_decode((string)$s, true);
+  foreach (($sd['_embedded']['sources'] ?? []) as $x) echo ($x['id'] ?? '?') . ' | name=' . ($x['name'] ?? '') . ' | ext=' . ($x['external_id'] ?? '') . ' | pipeline=' . ($x['pipeline_id'] ?? '') . ' | default=' . var_export($x['default'] ?? null, true) . "\n";
+  [$p, $pc] = $get('leads/pipelines');
+  echo "\n=== PIPELINES (HTTP $pc) ===\n";
+  $pd = json_decode((string)$p, true);
+  foreach (($pd['_embedded']['pipelines'] ?? []) as $x) echo ($x['id'] ?? '?') . ' | ' . ($x['name'] ?? '') . (($x['is_main'] ?? false) ? ' (main)' : '') . "\n";
+  exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); echo '{"ok":false}'; exit; }
 
 $cfg = file_exists(__DIR__ . '/config.php') ? include __DIR__ . '/config.php' : [];
@@ -91,9 +111,10 @@ function tg_send(?array $tg, string $html): void {
 $kommo_ok = null; $kommo_lead_id = null; $kommo_err = '';
 if ($KOMMO && !empty($KOMMO['token']) && !empty($KOMMO['subdomain'])) {
   $lead = [ 'name' => "$service — $name" . ($destination ? " ($destination)" : '') ];
-  // Source = "Schengen website" (field 432700, enum 456698), like usatravel.ae uses "USA website"
+  // Source = "Schengen website" (field 432700, enum 456698); Product = "Visa (Schengen Area)" (418116 / 341352)
   $lead['custom_fields_values'] = [
     ['field_id' => 432700, 'values' => [['enum_id' => 456698]]],
+    ['field_id' => 418116, 'values' => [['enum_id' => 341352]]],
   ];
 
   // «Неразобранное» (Incoming leads): сделка без ответственного, менеджер принимает её сам
