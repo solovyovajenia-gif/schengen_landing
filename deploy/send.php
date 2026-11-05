@@ -9,19 +9,6 @@
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 
-// TEMP diagnostic: list CONTACT custom-field schema only (no personal data). Remove after use.
-if (($_GET['diag'] ?? '') === 'wp9f3x') {
-  header('Content-Type: text/plain; charset=utf-8');
-  $c = include __DIR__ . '/config.php'; $k = $c['kommo'] ?? [];
-  $ch = curl_init("https://{$k['subdomain']}.kommo.com/api/v4/contacts/custom_fields?limit=250");
-  curl_setopt_array($ch, [CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . ($k['token'] ?? '')], CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 12]);
-  $d = json_decode((string)curl_exec($ch), true);
-  foreach (($d['_embedded']['custom_fields'] ?? []) as $cf) {
-    echo $cf['id'] . ' | code=' . ($cf['code'] ?? '-') . ' | ' . $cf['type'] . ' | ' . $cf['name'] . (empty($cf['enums']) ? '' : ' :: ' . implode(', ', array_map(fn($e) => ($e['enum_code'] ?? $e['id']) . '=' . $e['value'], $cf['enums']))) . "\n";
-  }
-  exit;
-}
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); echo '{"ok":false}'; exit; }
 
 $cfg = file_exists(__DIR__ . '/config.php') ? include __DIR__ . '/config.php' : [];
@@ -148,6 +135,21 @@ if ($KOMMO && !empty($KOMMO['token']) && !empty($KOMMO['subdomain'])) {
       if (isset($CMAP[$destination])) $cfv[] = ['field_id' => 534326, 'values' => [['enum_id' => $CMAP[$destination]]]]; // Country/Program
       [$fc] = kommo_call($KOMMO, 'PATCH', "leads/$lead_id", ['custom_fields_values' => $cfv]);
       $fields_ok = ($fc >= 200 && $fc < 300);
+
+      // Enrich the CONTACT with Email / Telegram / Language from "alt" (like usatravel).
+      // unsorted/forms ignores custom fields on contacts too, so fetch the contact and PATCH it.
+      [, $ld] = kommo_call($KOMMO, 'GET', "leads/$lead_id?with=contacts");
+      $contact_id = $ld['_embedded']['contacts'][0]['id'] ?? null;
+      if ($contact_id) {
+        $ccf = [];
+        if (preg_match('/[^@\s,;]+@[^@\s,;]+\.[a-z]{2,}/i', $alt, $em)) {
+          $ccf[] = ['field_code' => 'EMAIL', 'values' => [['value' => $em[0], 'enum_code' => 'PRIV']]];
+        } elseif ($alt !== '') {
+          $ccf[] = ['field_id' => 538334, 'values' => [['value' => ltrim($alt, "@ \t")]]]; // Telegram username (Radist.online)
+        }
+        if ($lang) { $lc = strtoupper($lang) === 'RU' ? 353778 : (strtoupper($lang) === 'EN' ? 353780 : 0); if ($lc) $ccf[] = ['field_id' => 433148, 'values' => [['enum_id' => $lc]]]; }
+        if ($ccf) { [$cc] = kommo_call($KOMMO, 'PATCH', "contacts/$contact_id", ['custom_fields_values' => $ccf]); $fields_ok = $fields_ok && ($cc >= 200 && $cc < 300); }
+      }
     }
   } else {
     @file_put_contents(__DIR__ . '/leads.log', "KOMMO ERROR $code: " . substr($raw, 0, 300) . "\n", FILE_APPEND | LOCK_EX);
