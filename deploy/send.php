@@ -88,14 +88,9 @@ function tg_send(?array $tg, string $html): void {
   if (!$r || strpos((string)$r, '"ok":true') === false) @file_put_contents(__DIR__ . '/leads.log', "TELEGRAM ERROR: " . substr((string)$r, 0, 200) . "\n", FILE_APPEND | LOCK_EX);
 }
 
-$kommo_ok = null; $kommo_lead_id = null; $kommo_err = '';
+$kommo_ok = null; $kommo_lead_id = null; $kommo_err = ''; $fields_ok = null;
 if ($KOMMO && !empty($KOMMO['token']) && !empty($KOMMO['subdomain'])) {
   $lead = [ 'name' => "$service — $name" . ($destination ? " ($destination)" : '') ];
-  // Source = "Schengen website" (field 432700, enum 456698); Product = "Visa (Schengen Area)" (418116 / 341352)
-  $lead['custom_fields_values'] = [
-    ['field_id' => 432700, 'values' => [['enum_id' => 456698]]],
-    ['field_id' => 418116, 'values' => [['enum_id' => 341352]]],
-  ];
 
   // «Неразобранное» (Incoming leads): сделка без ответственного, менеджер принимает её сам
   $host = parse_url($SITE, PHP_URL_HOST) ?: 'schengen';
@@ -129,7 +124,18 @@ if ($KOMMO && !empty($KOMMO['token']) && !empty($KOMMO['subdomain'])) {
     // все поля формы кроме имени и телефона — сообщением (примечанием) в сделку
     $lead_id = $data['_embedded']['unsorted'][0]['_embedded']['leads'][0]['id'] ?? null;
     $kommo_lead_id = $lead_id;
-    if ($lead_id) kommo_call($KOMMO, 'POST', "leads/$lead_id/notes", [[ 'note_type' => 'common', 'params' => ['text' => $body] ]]);
+    if ($lead_id) {
+      kommo_call($KOMMO, 'POST', "leads/$lead_id/notes", [[ 'note_type' => 'common', 'params' => ['text' => $body] ]]);
+      // unsorted/forms ignores custom_fields on the embedded lead — set them via PATCH (like the usatravel widget does)
+      $cfv = [
+        ['field_id' => 432700, 'values' => [['enum_id' => 456698]]], // Source  = Schengen website
+        ['field_id' => 418116, 'values' => [['enum_id' => 341352]]], // Product = Visa (Schengen Area)
+      ];
+      $CMAP = ['France'=>444958,'Germany'=>444960,'Italy'=>444962,'Netherlands'=>444964,'Austria'=>444966,'Switzerland'=>444970,'Greece'=>444974,'Spain'=>444942];
+      if (isset($CMAP[$destination])) $cfv[] = ['field_id' => 534326, 'values' => [['enum_id' => $CMAP[$destination]]]]; // Country/Program
+      [$fc] = kommo_call($KOMMO, 'PATCH', "leads/$lead_id", ['custom_fields_values' => $cfv]);
+      $fields_ok = ($fc >= 200 && $fc < 300);
+    }
   } else {
     @file_put_contents(__DIR__ . '/leads.log', "KOMMO ERROR $code: " . substr($raw, 0, 300) . "\n", FILE_APPEND | LOCK_EX);
   }
@@ -152,4 +158,4 @@ tg_send($TG,
   ($mailed === null ? '' : ($mailed ? "📧 Письмо отправлено\n" : "⚠️ Письмо НЕ отправлено\n")) .
   $kline);
 
-echo json_encode(['ok' => true, 'mail' => $mailed, 'kommo' => $kommo_ok]);
+echo json_encode(['ok' => true, 'mail' => $mailed, 'kommo' => $kommo_ok, 'fields' => $fields_ok]);
