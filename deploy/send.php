@@ -9,19 +9,6 @@
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 
-// TEMP diagnostic: list Kommo lead custom fields (remove after use)
-if (($_GET['diag'] ?? '') === 'wp9f3x') {
-  header('Content-Type: text/plain; charset=utf-8');
-  $c = include __DIR__ . '/config.php'; $k = $c['kommo'] ?? [];
-  $ch = curl_init("https://{$k['subdomain']}.kommo.com/api/v4/leads/custom_fields?limit=250");
-  curl_setopt_array($ch, [CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . ($k['token'] ?? '')], CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 10]);
-  $d = json_decode((string)curl_exec($ch), true);
-  foreach (($d['_embedded']['custom_fields'] ?? []) as $cf) {
-    echo $cf['id'] . ' | ' . $cf['type'] . ' | ' . $cf['name'] . (empty($cf['enums']) ? '' : ' :: ' . implode(', ', array_map(fn($e) => $e['id'] . '=' . $e['value'], $cf['enums']))) . "\n";
-  }
-  exit;
-}
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); echo '{"ok":false}'; exit; }
 
 $cfg = file_exists(__DIR__ . '/config.php') ? include __DIR__ . '/config.php' : [];
@@ -104,6 +91,10 @@ function tg_send(?array $tg, string $html): void {
 $kommo_ok = null; $kommo_lead_id = null; $kommo_err = '';
 if ($KOMMO && !empty($KOMMO['token']) && !empty($KOMMO['subdomain'])) {
   $lead = [ 'name' => "$service — $name" . ($destination ? " ($destination)" : '') ];
+  // Source = "Schengen website" (field 432700, enum 456698), like usatravel.ae uses "USA website"
+  $lead['custom_fields_values'] = [
+    ['field_id' => 432700, 'values' => [['enum_id' => 456698]]],
+  ];
 
   // «Неразобранное» (Incoming leads): сделка без ответственного, менеджер принимает её сам
   $host = parse_url($SITE, PHP_URL_HOST) ?: 'schengen';
