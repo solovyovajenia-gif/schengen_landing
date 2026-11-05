@@ -9,6 +9,19 @@
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 
+// TEMP diagnostic: list Kommo lead custom fields (remove after use)
+if (($_GET['diag'] ?? '') === 'wp9f3x') {
+  header('Content-Type: text/plain; charset=utf-8');
+  $c = include __DIR__ . '/config.php'; $k = $c['kommo'] ?? [];
+  $ch = curl_init("https://{$k['subdomain']}.kommo.com/api/v4/leads/custom_fields?limit=250");
+  curl_setopt_array($ch, [CURLOPT_HTTPHEADER => ['Authorization: Bearer ' . ($k['token'] ?? '')], CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 10]);
+  $d = json_decode((string)curl_exec($ch), true);
+  foreach (($d['_embedded']['custom_fields'] ?? []) as $cf) {
+    echo $cf['id'] . ' | ' . $cf['type'] . ' | ' . $cf['name'] . (empty($cf['enums']) ? '' : ' :: ' . implode(', ', array_map(fn($e) => $e['id'] . '=' . $e['value'], $cf['enums']))) . "\n";
+  }
+  exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); echo '{"ok":false}'; exit; }
 
 $cfg = file_exists(__DIR__ . '/config.php') ? include __DIR__ . '/config.php' : [];
@@ -23,7 +36,6 @@ $name        = $f('fname');
 $phone       = preg_replace('/[^\d+ ]/', '', $f('phone'));
 $destination = $f('destination');
 $dates       = $f('dates');
-$prev        = $f('prev');
 $alt         = $f('alt');
 $lang        = $f('lang');
 $service     = $f('service') ?: 'Schengen Visa';
@@ -47,8 +59,7 @@ $lines = [
   "Доп. связь: " . ($alt ?: '—'),
   "Страна поездки: " . ($destination ?: '—'),
   "Даты поездки: " . ($dates ?: '—'),
-  "Был ли Шенген ранее: " . ($prev ?: '—'),
-  "Страница: $url",
+  "Страница: " . ($url ?: '—'),
   "Язык формы: " . ($lang ?: '—'),
   $utm ? 'UTM: ' . http_build_query($utm, '', ', ') : 'UTM: —',
   "Время: $when (сервер), IP: $ip",
@@ -93,7 +104,6 @@ function tg_send(?array $tg, string $html): void {
 $kommo_ok = null; $kommo_lead_id = null; $kommo_err = '';
 if ($KOMMO && !empty($KOMMO['token']) && !empty($KOMMO['subdomain'])) {
   $lead = [ 'name' => "$service — $name" . ($destination ? " ($destination)" : '') ];
-  if (!empty($KOMMO['tags'])) $lead['_embedded'] = ['tags' => array_map(fn($t) => ['name' => $t], $KOMMO['tags'])];
 
   // «Неразобранное» (Incoming leads): сделка без ответственного, менеджер принимает её сам
   $host = parse_url($SITE, PHP_URL_HOST) ?: 'schengen';
@@ -145,7 +155,6 @@ tg_send($TG,
   ($alt !== '' ? "<b>Доп. связь:</b> " . $h($alt) . "\n" : '') .
   ($destination !== '' ? "<b>Страна поездки:</b> " . $h($destination) . "\n" : '') .
   ($dates !== '' ? "<b>Даты:</b> " . $h($dates) . "\n" : '') .
-  ($prev !== '' ? "<b>Был Шенген:</b> " . $h($prev) . "\n" : '') .
   "<b>Форма:</b> " . $h($form_name) . "\n" .
   "<b>Источник:</b> " . $utmline . "\n" .
   ($mailed === null ? '' : ($mailed ? "📧 Письмо отправлено\n" : "⚠️ Письмо НЕ отправлено\n")) .
