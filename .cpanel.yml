@@ -1,0 +1,15 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/visaproa/gotoeurope.ae
+    - /bin/cp index.html $DEPLOYPATH/
+    - /bin/cp -R img $DEPLOYPATH/
+    - /bin/cp logo.png $DEPLOYPATH/
+    - /bin/cp privacy.html $DEPLOYPATH/
+    - /bin/cp terms.html $DEPLOYPATH/
+    - /bin/cp refund.html $DEPLOYPATH/
+    - /bin/cp cookies.html $DEPLOYPATH/
+    - /bin/cp disclaimer.html $DEPLOYPATH/
+    - /bin/cp robots.txt $DEPLOYPATH/
+    - /bin/cp sitemap.xml $DEPLOYPATH/
+    - /bin/cp deploy/send.php $DEPLOYPATH/
