@@ -26,6 +26,12 @@ if (($_GET['diag'] ?? '') === 'wp9f3x') {
   echo "\n=== PIPELINES (HTTP $pc) ===\n";
   $pd = json_decode((string)$p, true);
   foreach (($pd['_embedded']['pipelines'] ?? []) as $x) echo ($x['id'] ?? '?') . ' | ' . ($x['name'] ?? '') . (($x['is_main'] ?? false) ? ' (main)' : '') . "\n";
+  if (($_GET['create'] ?? '') === '1') {
+    $ch = curl_init("https://{$k['subdomain']}.kommo.com/api/v4/sources");
+    curl_setopt_array($ch, [CURLOPT_CUSTOMREQUEST => 'POST', CURLOPT_HTTPHEADER => ['Content-Type: application/json', 'Authorization: Bearer ' . ($k['token'] ?? '')], CURLOPT_RETURNTRANSFER => true, CURLOPT_TIMEOUT => 10, CURLOPT_POSTFIELDS => json_encode([['name' => 'Schengen website', 'external_id' => 'schengen_gotoeurope', 'pipeline_id' => 14364439]], JSON_UNESCAPED_UNICODE)]);
+    $cr = curl_exec($ch); $cc = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    echo "\n=== CREATE SOURCE (HTTP $cc) ===\n$cr\n";
+  }
   exit;
 }
 
