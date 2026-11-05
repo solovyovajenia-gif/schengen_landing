@@ -109,10 +109,10 @@ if ($KOMMO && !empty($KOMMO['token']) && !empty($KOMMO['subdomain'])) {
   $lead = [ 'name' => "$service — $name" . ($destination ? " ($destination)" : '') ];
 
   // «Неразобранное» (Incoming leads): сделка без ответственного, менеджер принимает её сам
-  $host = parse_url($SITE, PHP_URL_HOST) ?: 'schengen';
+  $host = parse_url($SITE, PHP_URL_HOST) ?: 'gotoeurope.ae';
   $payload = [[
-    'source_uid'  => $host . '-' . bin2hex(random_bytes(8)),
-    'source_name' => $host,
+    'source_uid'  => 'gotoeurope_site_forms',          // стабильный → один источник (как usatravel)
+    'source_name' => $host . ' — site forms',           // показывается как «Источник» в автоматизациях
     'pipeline_id' => (int)($KOMMO['pipeline_id'] ?? 0) ?: null,
     'created_at'  => time(),
     'metadata' => [
