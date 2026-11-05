@@ -107,6 +107,7 @@ function tg_send(?array $tg, string $html): void {
 $kommo_ok = null; $kommo_lead_id = null; $kommo_err = ''; $fields_ok = null;
 if ($KOMMO && !empty($KOMMO['token']) && !empty($KOMMO['subdomain'])) {
   $lead = [ 'name' => "$service — $name" . ($destination ? " ($destination)" : '') ];
+  $lead['_embedded'] = ['tags' => [['name' => 'gotoeurope.ae']]]; // single source tag (like usatravel.ae)
 
   // «Неразобранное» (Incoming leads): сделка без ответственного, менеджер принимает её сам
   $host = parse_url($SITE, PHP_URL_HOST) ?: 'gotoeurope.ae';
