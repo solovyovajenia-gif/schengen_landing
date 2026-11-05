@@ -107,6 +107,8 @@ function kommo_site_source(array $k): ?array {
   if (is_file($cache)) {
     $c = json_decode((string)@file_get_contents($cache), true);
     if (!empty($c['id'])) return $c;
+    // negative cache: token can't manage sources (needs widget) — don't retry every lead
+    if (!empty($c['blocked']) && (time() - (int)$c['blocked'] < 86400)) return null;
   }
   // find existing
   [$gc, $gd] = kommo_call($k, 'GET', 'sources');
@@ -123,6 +125,7 @@ function kommo_site_source(array $k): ?array {
     if (!empty($s['id'])) { @file_put_contents($cache, json_encode($s)); return $s; }
   }
   @file_put_contents(__DIR__ . '/leads.log', "SOURCE $cc: " . substr((string)($craw ?? ''), 0, 200) . "\n", FILE_APPEND | LOCK_EX);
+  @file_put_contents($cache, json_encode(['blocked' => time(), 'last' => (int)$cc])); // retry in 24h; delete file to retry sooner
   return null;
 }
 
